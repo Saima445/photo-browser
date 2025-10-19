@@ -14,9 +14,7 @@ This project demonstrates the core principles of a modern **Single Page Applicat
 - **TanStack Query** – data fetching and caching made simple
 - **React Router** – smooth client-side navigation for SPA behavior
 
----
-
-## 🧭 How to Run the App
+## How to Run the App
 
 1. Clone the repository - git clone <repo-url>
 
