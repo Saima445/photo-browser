@@ -1,22 +1,55 @@
 import { Bolt, Moon, Sun } from "lucide-react";
+import { type JSX, useState } from "react";
 
-import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/theme-provider";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+
+type ThemeOption = "light" | "dark" | "system";
 
 export const ModeToggle = () => {
-  const { setTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
+  const [open, setOpen] = useState(false);
+
+  const modes: { name: ThemeOption; icon: JSX.Element }[] = [
+    { name: "light", icon: <Sun className="h-4 w-4" strokeWidth={1} /> },
+    { name: "dark", icon: <Moon className="h-4 w-4" strokeWidth={1} /> },
+    { name: "system", icon: <Bolt className="h-4 w-4" strokeWidth={1} /> },
+  ];
+
+  const active = modes.find((m) => m.name === theme) ?? modes[2];
+  const others = modes.filter((m) => m.name !== active.name);
 
   return (
-    <>
-      <Button variant="outline" size="icon" onClick={() => setTheme("light")}>
-        <Sun className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
+    <div
+      className="flex items-center gap-2"
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+    >
+      <div
+        className={cn(
+          "flex gap-2 transition-all duration-300 ease-in-out overflow-hidden",
+          open ? "max-w-[200px] opacity-100 translate-x-0" : "max-w-0 opacity-0 translate-x-2"
+        )}
+      >
+        {others.map((m) => (
+          <Button
+            key={m.name}
+            variant="outline"
+            size="icon"
+            onClick={() => {
+              setTheme(m.name);
+              setOpen(false);
+            }}
+          >
+            {m.icon}
+          </Button>
+        ))}
+      </div>
+
+      <Button variant="secondary" size="icon">
+        {active.icon}
       </Button>
-      <Button variant="outline" size="icon" onClick={() => setTheme("dark")}>
-        <Moon className="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
-      </Button>
-      <Button variant="outline" size="icon" onClick={() => setTheme("system")}>
-        <Bolt className="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
-      </Button>
-    </>
+    </div>
   );
 };

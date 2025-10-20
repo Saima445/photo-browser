@@ -1,7 +1,6 @@
 @import "tailwindcss";
 
 @plugin "tailwindcss-animate";
-@import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -112,11 +111,51 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+@layer utilities {
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;
+  }
+
+  p {
+    @apply text-sm sm:text-base leading-relaxed;
+  }
+
+  h1 {
+    @apply text-[52px]  tracking-tight;
+  }
+
+  h2 {
+    @apply text-3xl tracking-tight;
+  }
+
+  h3 {
+    @apply text-2xl tracking-tight;
+  }
+
+  h4 {
+    @apply text-xl tracking-tight;
+  }
+
+  h5 {
+    @apply text-lg tracking-tight;
+  }
+
+  h6 {
+    @apply text-base tracking-tight;
   }
 }
