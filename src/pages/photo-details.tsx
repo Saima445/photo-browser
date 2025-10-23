@@ -9,6 +9,7 @@ import { getPhotoByIdWithClient, getPhotosByAlbumIdWithClient } from "@/api/json
 import { getUserByIdWithClient } from "@/api/jsonplaceholder/users";
 import { getPicsumPhotoInfo } from "@/api/picsum/picsum-photo";
 import { ImageWithFallback } from "@/components/image-with-fallback";
+import ScrollToTopButton from "@/components/scroll-to-top-button";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -56,13 +57,14 @@ const PhotoDetails = () => {
     enabled: !!userId,
   });
 
-  useLayoutEffect(() => {
-    // Scrollaa heti ylös ilman animaatiota navigoinnin yhteydessä
-    window.scrollTo({ top: 0, behavior: "instant" });
-  }, [id]);
+  // useLayoutEffect(() => {
+  //   // Scrollaa heti ylös ilman animaatiota navigoinnin yhteydessä
+  //   window.scrollTo({ top: 0, behavior: "instant" });
+  // }, [id]);
 
   return (
-    <div className="flex flex-col gap-12">
+    <div className="relative flex flex-col gap-12">
+      <ScrollToTopButton />
       <section className="md:h-[calc(100svh-68px)] gap-6 md:gap-0 pb-8 flex flex-col md:flex-row">
         <div className="flex-1 flex items-center justify-center">
           {isLoading && <Loader className="h-8 w-8 animate-spin text-primary" />}
@@ -154,7 +156,7 @@ const PhotoDetails = () => {
           </div>
         )}
 
-        {!isError && (
+        {isError && (
           <div className="w-full h-[50dvh] flex flex-col items-center justify-center gap-4">
             <h3>Something went wrong with fetching</h3>
             <p className="text-muted-foreground mb-6">But give it one more go</p>

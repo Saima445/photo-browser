@@ -3,12 +3,15 @@ import { ArrowDown, Loader, RefreshCw } from "lucide-react";
 import { Link } from "react-router-dom";
 
 import { getPhotosWithClient } from "@/api/jsonplaceholder/photos";
+import { ImageWithFallback } from "@/components/image-with-fallback";
+import ScrollToTopButton from "@/components/scroll-to-top-button";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/features/theme-provider";
 import { cn } from "@/lib/utils";
 
 const Home = () => {
   const { theme } = useTheme();
+
   const {
     data: photos,
     isLoading,
@@ -20,9 +23,10 @@ const Home = () => {
   });
 
   return (
-    <div className="flex flex-col gap-12">
+    <div className="relative flex flex-col gap-12">
+      <ScrollToTopButton />
       <section
-        className="h-[calc(100svh-68px)] no-scrollbar bg-contain bg-center bg-no-repeat sm:bg-fixed transition-[background-image] duration-500"
+        className="h-[calc(100svh-68px)] bg-contain bg-center bg-no-repeat sm:bg-fixed transition-[background-image] duration-500"
         style={{
           backgroundImage: theme === "dark" ? "url('/images/bg-dark.jpg')" : "url('/images/bg-light.jpg')",
         }}
@@ -35,7 +39,7 @@ const Home = () => {
               size="icon"
               onClick={() => {
                 const section = document.getElementById("photos");
-                if (section) section.scrollIntoView({ behavior: "smooth" });
+                section?.scrollIntoView({ behavior: "smooth" });
               }}
             >
               <ArrowDown className="h-12 w-12 shrink-0" strokeWidth={1} />
@@ -85,12 +89,7 @@ const Home = () => {
                     sizeClass
                   )}
                 >
-                  <img
-                    src={`${photo.thumbnailUrl}`}
-                    alt={photo.title}
-                    loading="lazy"
-                    className="w-full h-full object-cover"
-                  />
+                  <ImageWithFallback src={photo.thumbnailUrl} alt={photo.title} />
 
                   <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/40 transition-colors duration-500">
                     <p className="opacity-0 group-hover:opacity-100 text-white text-center px-2 transition-opacity duration-500">
