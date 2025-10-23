@@ -1,8 +1,8 @@
 import { Bolt, Moon, Sun } from "lucide-react";
 import { type JSX, useState } from "react";
 
-import { useTheme } from "@/components/theme-provider";
 import { Button } from "@/components/ui/button";
+import { useTheme } from "@/features/theme-provider";
 import { cn } from "@/lib/utils";
 
 type ThemeOption = "light" | "dark" | "system";

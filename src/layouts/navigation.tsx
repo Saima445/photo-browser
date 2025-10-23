@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 
-const navLink = cva("uppercase text-sm transition-colors hover:text-primary", {
+const navLink = cva("uppercase text-sm transition-colors font-extralight hover:text-primary", {
   variants: {
     active: {
       true: "text-primary font-semibold",

@@ -1,8 +1,7 @@
 @import "tailwindcss";
-
-@plugin "tailwindcss-animate";
-
-@custom-variant dark (&:is(.dark *));
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
@@ -46,19 +45,19 @@
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
+  --card: hsl(33, 33%, 94%);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
   --primary: oklch(0.205 0 0);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
+  --secondary: hsl(33, 33%, 92%);
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
   --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
+  --destructive: oklch(94.118% 0.20031 105.701);
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
@@ -78,9 +77,9 @@
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
+  --background: hsl(0, 0%, 9%);
   --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
+  --card: hsl(0, 0%, 12%);
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
@@ -90,7 +89,7 @@
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.269 0 0);
   --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
+  --accent: hsl(0, 0%, 14%);
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
@@ -132,30 +131,30 @@
   }
 
   p {
-    @apply text-sm sm:text-base leading-relaxed;
+    @apply text-sm sm:text-base font-extralight leading-relaxed;
   }
 
   h1 {
-    @apply text-[52px]  tracking-tight;
+    @apply text-[72px] uppercase tracking-tight;
   }
 
   h2 {
-    @apply text-3xl tracking-tight;
+    @apply text-[52px] tracking-tight;
   }
 
   h3 {
-    @apply text-2xl tracking-tight;
+    @apply text-3xl tracking-tight;
   }
 
   h4 {
-    @apply text-xl tracking-tight;
+    @apply text-2xl tracking-tight;
   }
 
   h5 {
-    @apply text-lg tracking-tight;
+    @apply text-xl tracking-tight;
   }
 
   h6 {
-    @apply text-base tracking-tight;
+    @apply text-lg tracking-tight;
   }
 }

@@ -1,10 +1,10 @@
-import "@/index.css";
+import "@/global.css";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "@/features/theme-provider";
 import { AppRoutes } from "@/routes/app-routes";
 import { queryClient } from "@/utils/query-client";
 

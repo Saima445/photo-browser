@@ -4,12 +4,12 @@ import { Route, Routes } from "react-router-dom";
 import { MainLayout } from "@/layouts/main-layout";
 import Home from "@/pages/home";
 import NotFound from "@/pages/not-found";
+import PhotoDetails from "@/pages/photo-details";
 import { AuthRoutes } from "@/routes/auth-routes";
 
 // test loader
 // const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 // const Home = lazy(() => delay(2000).then(() => import("@/pages/home")));
-const PhotoDetails = lazy(() => import("@/pages/photo-details"));
 const UserDetails = lazy(() => import("@/pages/user-details"));
 const Albums = lazy(() => import("@/pages/albums"));
 const AlbumDetails = lazy(() => import("@/pages/album-details"));
