@@ -57,10 +57,9 @@ const PhotoDetails = () => {
     enabled: !!userId,
   });
 
-  // useLayoutEffect(() => {
-  //   // Scrollaa heti ylös ilman animaatiota navigoinnin yhteydessä
-  //   window.scrollTo({ top: 0, behavior: "instant" });
-  // }, [id]);
+  useLayoutEffect(() => {
+    document.getElementById("scroll-root")?.scrollTo({ top: 0, behavior: "instant" });
+  }, []);
 
   return (
     <div className="relative flex flex-col gap-12">
@@ -185,7 +184,7 @@ const PhotoDetails = () => {
                   key={photo.id}
                   onClick={() => {
                     navigate(`/photos/${photo.id}`);
-                    window.scrollTo({ top: 0, behavior: "smooth" });
+                    document.getElementById("scroll-root")?.scrollTo({ top: 0, behavior: "smooth" });
                   }}
                   className={cn(
                     "group relative block overflow-hidden transform transition duration-300 hover:scale-[1.03] break-inside-avoid",

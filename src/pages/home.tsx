@@ -32,14 +32,13 @@ const Home = () => {
         }}
       >
         <div className="flex flex-col justify-start">
-          <div className="flex">
+          <div className="flex items-center gap-6">
             <h1>Serving</h1>
             <Button
               variant="secondary"
               size="icon"
               onClick={() => {
-                const section = document.getElementById("photos");
-                section?.scrollIntoView({ behavior: "smooth" });
+                document.getElementById("photos")?.scrollIntoView({ behavior: "smooth" });
               }}
             >
               <ArrowDown className="h-12 w-12 shrink-0" strokeWidth={1} />

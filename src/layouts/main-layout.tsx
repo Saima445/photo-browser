@@ -9,7 +9,7 @@ export const MainLayout = () => {
     <div id="scroll-root" className="h-[100dvh] w-[100vw] flex flex-col overflow-y-auto no-scrollbar">
       <Navigation />
 
-      <main className="flex-1 w-full max-w-[1600px] mx-auto p-6 pt-[68px] 2xl:px-0">
+      <main className="flex-1 w-full max-w-[1600px] mx-auto py-6 px-8 pt-[68px] 2xl:px-0">
         <Suspense fallback={<PageLoader />}>
           <Outlet />
         </Suspense>
