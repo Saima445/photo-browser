@@ -1,16 +1,20 @@
 import { useQuery } from "@tanstack/react-query";
-import { ArrowDown, Loader, RefreshCw } from "lucide-react";
+import { Loader, RefreshCw } from "lucide-react";
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
+import { getAlbumsWithClient } from "@/api/jsonplaceholder/albums";
 import { getPhotosWithClient } from "@/api/jsonplaceholder/photos";
-import { ImageWithFallback } from "@/components/image-with-fallback";
-import ScrollToTopButton from "@/components/scroll-to-top-button";
+import { getUsersWithClient } from "@/api/jsonplaceholder/users";
 import { Button } from "@/components/ui/button";
-import { useTheme } from "@/features/theme-provider";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Hero } from "@/elements/hero";
+import { ImageWithFallback } from "@/elements/image-with-fallback";
+import ScrollToTopButton from "@/elements/scroll-to-top-button";
 import { cn } from "@/lib/utils";
 
 const Home = () => {
-  const { theme } = useTheme();
+  const [selectedUser, setSelectedUser] = useState<number | null>(null);
 
   const {
     data: photos,
@@ -20,35 +24,50 @@ const Home = () => {
   } = useQuery({
     queryKey: ["photos"],
     queryFn: getPhotosWithClient,
+    placeholderData: (prev) => prev,
   });
 
+  const { data: users } = useQuery({
+    queryKey: ["users"],
+    queryFn: getUsersWithClient,
+  });
+
+  const { data: albums } = useQuery({
+    queryKey: ["albums"],
+    queryFn: getAlbumsWithClient,
+  });
+
+  const filteredPhotos = useMemo(() => {
+    if (!selectedUser || !albums || !photos) return photos;
+
+    const userAlbumIds = albums.filter((album) => album.userId === selectedUser).map((album) => album.id);
+
+    return photos.filter((photo) => userAlbumIds.includes(photo.albumId));
+  }, [selectedUser, photos, albums]);
+
   return (
-    <div className="relative flex flex-col gap-12">
+    <div className="relative flex flex-col gap-22">
       <ScrollToTopButton />
-      <section
-        className="h-[calc(100svh-68px)] bg-contain bg-center bg-no-repeat sm:bg-fixed transition-[background-image] duration-500"
-        style={{
-          backgroundImage: theme === "dark" ? "url('/images/bg-dark.jpg')" : "url('/images/bg-light.jpg')",
-        }}
-      >
-        <div className="flex flex-col justify-start">
-          <div className="flex items-center gap-6">
-            <h1>Serving</h1>
-            <Button
-              variant="secondary"
-              size="icon"
-              onClick={() => {
-                document.getElementById("photos")?.scrollIntoView({ behavior: "smooth" });
-              }}
-            >
-              <ArrowDown className="h-12 w-12 shrink-0" strokeWidth={1} />
-            </Button>
-          </div>
-          <h1>better pixels</h1>
-          <h1 className="self-end items-end">since 2025</h1>
-        </div>
-      </section>
+      <Hero />
       <section id="photos">
+        <div className="sm:sticky sm:top-[68px] w-full flex justify-center mb-8 z-999">
+          <Select
+            value={selectedUser === null ? "" : String(selectedUser)}
+            onValueChange={(value) => setSelectedUser(value === "all" ? null : Number(value))}
+          >
+            <SelectTrigger className="w-[50%]">
+              <SelectValue placeholder="Filter photos by user" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All users</SelectItem>
+              {users?.map((user) => (
+                <SelectItem key={user.id} value={String(user.id)}>
+                  {user.username}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
         {isLoading && (
           <div className="w-full h-[50dvh] flex items-center justify-center">
             <Loader className="h-8 w-8 animate-spin text-primary" />
@@ -65,9 +84,9 @@ const Home = () => {
           </div>
         )}
 
-        {photos && photos.length > 0 && (
+        {filteredPhotos && filteredPhotos.length > 0 && (
           <div className="columns-2 sm:columns-3 md:columns-4 xl:columns-5 gap-4 space-y-4 lg:gap-10 lg:space-y-10">
-            {photos.slice(0, 1000).map((photo, index) => {
+            {filteredPhotos.slice(0, 1000).map((photo, index) => {
               // mixed sizes
               const sizeClass = (() => {
                 const mod = index % 6;

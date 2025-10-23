@@ -3,8 +3,8 @@ import { ArrowDownLeft, ArrowUpRight, X } from "lucide-react";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 
-import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
+import { ModeToggle } from "@/elements/mode-toggle";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 

@@ -8,9 +8,9 @@ import { getAlbumByIdWithClient } from "@/api/jsonplaceholder/albums";
 import { getPhotoByIdWithClient, getPhotosByAlbumIdWithClient } from "@/api/jsonplaceholder/photos";
 import { getUserByIdWithClient } from "@/api/jsonplaceholder/users";
 import { getPicsumPhotoInfo } from "@/api/picsum/picsum-photo";
-import { ImageWithFallback } from "@/components/image-with-fallback";
-import ScrollToTopButton from "@/components/scroll-to-top-button";
 import { Button } from "@/components/ui/button";
+import { ImageWithFallback } from "@/elements/image-with-fallback";
+import ScrollToTopButton from "@/elements/scroll-to-top-button";
 import { cn } from "@/lib/utils";
 
 const PhotoDetails = () => {
@@ -84,7 +84,7 @@ const PhotoDetails = () => {
           <div className="flex flex-col justify-start gap-4 bg-secondary p-6 rounded-3xl">
             <h3 className="mb-2">Album details</h3>
             <p>Album: {album?.title}</p>
-            <p>User behind this album: {user?.username}</p>
+            <p>User behind this album: {user?.name}</p>
 
             <div className="flex items-center justify-center flex-wrap gap-4">
               <a
@@ -121,7 +121,7 @@ const PhotoDetails = () => {
                 </PopoverTrigger>
                 <PopoverContent
                   sideOffset={6}
-                  className="bg-accent text-accent-foreground rounded-3xl px-6 py-4 z-[9999]"
+                  className="bg-popover text-popover-foreground rounded-3xl px-6 py-4 z-[9999]"
                 >
                   <p className="text-xs font-semibold">Company: {user?.company.name}</p>
                   <p className="text-xs">"{user?.company.catchPhrase}"</p>
