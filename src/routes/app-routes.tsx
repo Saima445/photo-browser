@@ -10,7 +10,6 @@ import { AuthRoutes } from "@/routes/auth-routes";
 // test loader
 // const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 // const Home = lazy(() => delay(2000).then(() => import("@/pages/home")));
-const UserDetails = lazy(() => import("@/pages/user-details"));
 const Albums = lazy(() => import("@/pages/albums"));
 const AlbumDetails = lazy(() => import("@/pages/album-details"));
 const Profile = lazy(() => import("@/pages/profile"));
@@ -23,7 +22,6 @@ export const AppRoutes = () => {
         <Route path="/photos/:id" element={<PhotoDetails />} />
         <Route path="/albums" element={<Albums />} />
         <Route path="/albums/:albumId" element={<AlbumDetails />} />
-        <Route path="/users/:id" element={<UserDetails />} />
 
         <Route element={<AuthRoutes />}>
           <Route path="/profile" element={<Profile />} />

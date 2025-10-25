@@ -1,7 +1,7 @@
 import { cva } from "class-variance-authority";
 import { ArrowDownLeft, ArrowUpRight, X } from "lucide-react";
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/elements/mode-toggle";
@@ -38,7 +38,9 @@ export const Navigation = () => {
   if (isMobile) {
     return (
       <nav className="fixed top-0 left-0 w-full flex items-center justify-between pl-6 pr-4 py-2 bg-background z-[999]">
-        <h4 className="">Photo Browser</h4>
+        <Link to={"/"}>
+          <h4 className="">Photo Browser</h4>
+        </Link>
         {!menuOpen && (
           <Button variant="ghost" size="lgIcon" onClick={() => setMenuOpen(true)} aria-label="Open menu">
             <ArrowDownLeft className="!h-12 !w-12 shrink-0" strokeWidth={1} />

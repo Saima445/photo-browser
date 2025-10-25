@@ -7,19 +7,15 @@ interface ImageWithFallbackProps {
   src: string;
   alt: string;
   className?: string;
+  imageClassName?: string;
 }
 
-export const ImageWithFallback = ({ src, alt, className }: ImageWithFallbackProps) => {
+export const ImageWithFallback = ({ src, alt, className, imageClassName }: ImageWithFallbackProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
 
   return (
-    <div
-      className={cn(
-        "h-full w-full bg-foreground/60 flex items-center justify-center overflow-hidden",
-        className
-      )}
-    >
+    <div className={cn("h-full w-full flex items-center justify-center overflow-hidden", className)}>
       {!hasError ? (
         <img
           src={src}
@@ -27,7 +23,8 @@ export const ImageWithFallback = ({ src, alt, className }: ImageWithFallbackProp
           loading="lazy"
           className={cn(
             "w-full h-full object-cover transition-opacity duration-500",
-            isLoaded ? "opacity-100" : "opacity-0"
+            isLoaded ? "opacity-100" : "opacity-0",
+            imageClassName
           )}
           onLoad={() => setIsLoaded(true)}
           onError={() => setHasError(true)}

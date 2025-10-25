@@ -11,6 +11,7 @@ import BackPreviousButton from "@/elements/button-back-to-previous";
 import ScrollToTopButton from "@/elements/button-scroll-to-top";
 import { ImageWithFallback } from "@/elements/image-with-fallback";
 import { cn } from "@/lib/utils";
+import { photoAspectClass } from "@/utils/photo-aspect-class";
 
 const AlbumDetails = () => {
   const { albumId } = useParams<{ albumId: string }>();
@@ -76,17 +77,6 @@ const AlbumDetails = () => {
         {photosByAlbum && photosByAlbum.length > 0 && (
           <div className="columns-2 md:columns-3 lg:columns-4 xl:columns-5 gap-4 space-y-4 lg:gap-10 lg:space-y-10">
             {photosByAlbum.map((photo, index) => {
-              // mixed sizes
-              const sizeClass = (() => {
-                const mod = index % 6;
-                if (mod === 0) return "aspect-[3/4]";
-                if (mod === 1) return "aspect-[4/3]";
-                if (mod === 2) return "aspect-[1/1]";
-                if (mod === 3) return "aspect-[2/3]";
-                if (mod === 4) return "aspect-[3/2]";
-                return "aspect-[5/4]";
-              })();
-
               return (
                 <div
                   key={photo.id}
@@ -96,7 +86,7 @@ const AlbumDetails = () => {
                   }}
                   className={cn(
                     "group relative block overflow-hidden transform transition duration-300 hover:scale-[1.03] break-inside-avoid",
-                    sizeClass
+                    photoAspectClass(index)
                   )}
                 >
                   <ImageWithFallback src={photo.thumbnailUrl} alt={photo.title} />
