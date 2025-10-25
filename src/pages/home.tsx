@@ -78,7 +78,7 @@ const Home = () => {
     <div className="relative flex flex-col gap-24">
       <ScrollToTopButton />
       <section
-        className="h-[calc(100svh-68px)] bg-contain bg-center bg-no-repeat sm:bg-fixed transition-[background-image] duration-500"
+        className="h-[calc(100svh-68px)] max-h-[1000px] bg-contain bg-center bg-no-repeat sm:bg-fixed transition-[background-image] duration-500"
         style={{
           backgroundImage: theme === "dark" ? "url('/images/bg-dark.jpg')" : "url('/images/bg-light.jpg')",
         }}
@@ -91,7 +91,7 @@ const Home = () => {
             value={selectedUser === null ? "" : String(selectedUser)}
             onValueChange={(value) => setSelectedUser(value === "all" ? null : Number(value))}
           >
-            <SelectTrigger className="md:w-[50%]">
+            <SelectTrigger className="md:w-[55%]">
               <SelectValue placeholder="Filter photos by user" />
             </SelectTrigger>
             <SelectContent>

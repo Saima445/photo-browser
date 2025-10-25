@@ -1,6 +1,6 @@
 import { Popover, PopoverContent, PopoverTrigger } from "@radix-ui/react-popover";
 import { useQuery } from "@tanstack/react-query";
-import { Building2, Globe, Loader, Mail, Phone, RefreshCw } from "lucide-react";
+import { ArrowDown, Building2, Globe, Loader, Mail, Phone, RefreshCw } from "lucide-react";
 import { useLayoutEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -12,12 +12,14 @@ import { Button } from "@/components/ui/button";
 import BackPreviousButton from "@/elements/button-back-to-previous";
 import ScrollToTopButton from "@/elements/button-scroll-to-top";
 import { ImageWithFallback } from "@/elements/image-with-fallback";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 import { photoAspectClass } from "@/utils/photo-aspect-class";
 
 const PhotoDetails = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
 
   const {
     data: photo,
@@ -67,8 +69,8 @@ const PhotoDetails = () => {
     <div className="relative flex flex-col gap-24 pt-24 md:pt-0">
       <ScrollToTopButton />
       <BackPreviousButton />
-      <section className="md:h-[calc(100svh-68px)] gap-6 pb-8 flex flex-col md:flex-row">
-        <div className="flex-1 flex items-center justify-center">
+      <section className="md:h-[calc(100svh-68px)] md:max-h-[1000px] gap-6 pb-8 flex flex-col md:flex-row">
+        <div className="flex-1 flex items-center justify-center relative">
           {isLoading && <Loader className="h-8 w-8 animate-spin text-primary my-32" />}
           {photo && (
             <ImageWithFallback
@@ -77,6 +79,15 @@ const PhotoDetails = () => {
               className="md:max-h-[90%]"
               imageClassName="object-contain"
             />
+          )}
+          {!isMobile && (
+            <div className="absolute bottom-0 left-0 flex">
+              <ArrowDown strokeWidth={1} />
+              <div>
+                <p className="text-xs uppercase">(Keep</p>
+                <p className="text-xs uppercase">scrolling)</p>
+              </div>
+            </div>
           )}
         </div>
         <div className="md:w-[35%] p-8 lg:p-12 rounded-3xl bg-card flex flex-col justify-start gap-8 overflow-y-auto no-scrollbar">

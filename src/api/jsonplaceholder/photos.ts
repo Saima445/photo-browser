@@ -1,29 +1,5 @@
 import { apiClient } from "@/api/jsonplaceholder/client";
-import { API_BASE_URL, imageUrl } from "@/utils/const";
-
-// generic way
-// export const getPhotos = async () => {
-//   const res = await fetch(`${API_BASE_URL}/photos`);
-
-//   if (!res.ok) {
-//     throw new Error(`Failed to fetch photos: ${res.status}`);
-//   }
-
-//   const data = await res.json();
-//   return data;
-// };
-
-// export const getPhotoById = async (id: number) => {
-//   const res = await fetch(`${API_BASE_URL}/photos/${id}`);
-
-//   if (!res.ok) {
-//     throw new Error(`Failed to fetch photo: ${res.status}`);
-//   }
-
-//   const data = await res.json();
-
-//   return data;
-// };
+import { imageUrl } from "@/utils/const";
 
 // type safe way
 interface Photo {

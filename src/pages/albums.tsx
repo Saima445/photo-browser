@@ -6,6 +6,7 @@ import { getAlbumsWithClient } from "@/api/jsonplaceholder/albums";
 import { Button } from "@/components/ui/button";
 import BackPreviousButton from "@/elements/button-back-to-previous";
 import { cn } from "@/lib/utils";
+import { photoAspectClass } from "@/utils/photo-aspect-class";
 
 const Albums = () => {
   const {
@@ -59,31 +60,20 @@ const Albums = () => {
         {albums && albums.length > 0 && (
           <div className="columns-2 sm:columns-3 md:columns-4 xl:columns-5 gap-4 space-y-4 lg:gap-10 lg:space-y-10">
             {albums.map((album, index) => {
-              // mixed sizes
-              const sizeClass = (() => {
-                const mod = index % 6;
-                if (mod === 0) return "aspect-[3/4]";
-                if (mod === 1) return "aspect-[4/3]";
-                if (mod === 2) return "aspect-[1/1]";
-                if (mod === 3) return "aspect-[2/3]";
-                if (mod === 4) return "aspect-[3/2]";
-                return "aspect-[5/4]";
-              })();
-
               return (
                 <Link
                   key={album.id}
                   to={`/albums/${album.id}`}
                   className={cn(
                     "group relative bg-card p-2 rounded-3xl flex flex-col gap-2 justify-center items-center transform transition duration-300 hover:scale-[1.03] break-inside-avoid",
-                    sizeClass
+                    photoAspectClass(index)
                   )}
                 >
                   <div className="flex gap-4 items-center">
                     <Folder className="w-12 h-12" strokeWidth={1} />
                     <h3>No. {album.id}</h3>
                   </div>
-                  <p className="text-center px-2">
+                  <p className="text-center px-2 line-clamp-2">
                     {album.title ? album.title.charAt(0).toUpperCase() + album.title.slice(1) : ""}
                   </p>
                 </Link>
