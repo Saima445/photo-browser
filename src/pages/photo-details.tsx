@@ -9,8 +9,9 @@ import { getPhotoByIdWithClient, getPhotosByAlbumIdWithClient } from "@/api/json
 import { getUserByIdWithClient } from "@/api/jsonplaceholder/users";
 import { getPicsumPhotoInfo } from "@/api/picsum/picsum-photo";
 import { Button } from "@/components/ui/button";
+import BackPreviousButton from "@/elements/button-back-to-previous";
+import ScrollToTopButton from "@/elements/button-scroll-to-top";
 import { ImageWithFallback } from "@/elements/image-with-fallback";
-import ScrollToTopButton from "@/elements/scroll-to-top-button";
 import { cn } from "@/lib/utils";
 
 const PhotoDetails = () => {
@@ -62,8 +63,9 @@ const PhotoDetails = () => {
   }, []);
 
   return (
-    <div className="relative flex flex-col gap-12">
+    <div className="relative flex flex-col gap-24">
       <ScrollToTopButton />
+      <BackPreviousButton />
       <section className="md:h-[calc(100svh-68px)] gap-6 md:gap-0 pb-8 flex flex-col md:flex-row">
         <div className="flex-1 flex items-center justify-center">
           {isLoading && <Loader className="h-8 w-8 animate-spin text-primary" />}
@@ -72,21 +74,21 @@ const PhotoDetails = () => {
           )}
         </div>
         <div className="md:w-[35%] p-8 lg:p-12 rounded-3xl bg-card flex flex-col justify-start gap-8 overflow-y-auto no-scrollbar">
-          <div className=" flex flex-col justify-start gap-4">
-            <h3 className="mb-2">Photo details</h3>
+          <div className=" flex flex-col justify-start gap-2">
+            <h3 className="mb-4">Photo details</h3>
 
-            <p>Title: {photo?.title}</p>
-            <p>Author: {picsumData?.author}</p>
+            <p>Title: {photo?.title ? photo.title.charAt(0).toUpperCase() + photo.title.slice(1) : ""}</p>
+            <p>Photographer: {picsumData?.author}</p>
             <p>
               Resolution: {picsumData?.width} x {picsumData?.height}
             </p>
           </div>
-          <div className="flex flex-col justify-start gap-4 bg-secondary p-6 rounded-3xl">
-            <h3 className="mb-2">Album details</h3>
-            <p>Album: {album?.title}</p>
-            <p>User behind this album: {user?.name}</p>
+          <div className="flex flex-col justify-start gap-2 bg-secondary p-6 rounded-3xl">
+            <h3 className="mb-4">Album details</h3>
+            <p>Album: {album?.title ? album.title.charAt(0).toUpperCase() + album.title.slice(1) : ""}</p>
+            <p>Who made this album: {user?.name}</p>
 
-            <div className="flex items-center justify-center flex-wrap gap-4">
+            <div className="flex items-center justify-center flex-wrap gap-4 mt-4">
               <a
                 href={`mailto:${user?.email}`}
                 target="_blank"
@@ -164,7 +166,7 @@ const PhotoDetails = () => {
             </Button>
           </div>
         )}
-
+        <h2 className="mb-8 ">More photos from this album</h2>
         {photosByAlbum && photosByAlbum.length > 0 && (
           <div className="columns-2 sm:columns-3 md:columns-4 xl:columns-5 gap-4 space-y-4 lg:gap-10 lg:space-y-10">
             {photosByAlbum.map((photo, index) => {
@@ -194,7 +196,7 @@ const PhotoDetails = () => {
                   <ImageWithFallback src={photo.thumbnailUrl} alt={photo.title} />
                   <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/40 transition-colors duration-500">
                     <p className="opacity-0 group-hover:opacity-100 text-white text-center px-2 transition-opacity duration-500">
-                      {photo.title}
+                      {photo.title ? photo.title.charAt(0).toUpperCase() + photo.title.slice(1) : ""}
                     </p>
                   </div>
                 </div>

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Loader, RefreshCw } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { getAlbumsWithClient } from "@/api/jsonplaceholder/albums";
@@ -8,9 +8,9 @@ import { getPhotosWithClient } from "@/api/jsonplaceholder/photos";
 import { getUsersWithClient } from "@/api/jsonplaceholder/users";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import ScrollToTopButton from "@/elements/button-scroll-to-top";
 import { Hero } from "@/elements/hero";
 import { ImageWithFallback } from "@/elements/image-with-fallback";
-import ScrollToTopButton from "@/elements/scroll-to-top-button";
 import { cn } from "@/lib/utils";
 
 const Home = () => {
@@ -37,6 +37,32 @@ const Home = () => {
     queryFn: getAlbumsWithClient,
   });
 
+  // this for now until I study about createBrowserRouter
+  useEffect(() => {
+    const el = document.getElementById("scroll-root");
+    if (!el) return;
+
+    const onScroll = () => {
+      sessionStorage.setItem("homeScroll", String(el.scrollTop));
+    };
+
+    el.addEventListener("scroll", onScroll);
+    return () => el.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    const el = document.getElementById("scroll-root");
+    if (!el) return;
+
+    const savedScroll = sessionStorage.getItem("homeScroll");
+    if (savedScroll) {
+      el.scrollTo({
+        top: Number(savedScroll),
+        behavior: "instant",
+      });
+    }
+  }, []);
+
   const filteredPhotos = useMemo(() => {
     if (!selectedUser || !albums || !photos) return photos;
 
@@ -46,7 +72,7 @@ const Home = () => {
   }, [selectedUser, photos, albums]);
 
   return (
-    <div className="relative flex flex-col gap-22">
+    <div className="relative flex flex-col gap-24">
       <ScrollToTopButton />
       <Hero />
       <section id="photos">
@@ -55,7 +81,7 @@ const Home = () => {
             value={selectedUser === null ? "" : String(selectedUser)}
             onValueChange={(value) => setSelectedUser(value === "all" ? null : Number(value))}
           >
-            <SelectTrigger className="w-[50%]">
+            <SelectTrigger className="md:w-[50%]">
               <SelectValue placeholder="Filter photos by user" />
             </SelectTrigger>
             <SelectContent>
@@ -111,7 +137,7 @@ const Home = () => {
 
                   <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/40 transition-colors duration-500">
                     <p className="opacity-0 group-hover:opacity-100 text-white text-center px-2 transition-opacity duration-500">
-                      {photo.title}
+                      {photo.title ? photo.title.charAt(0).toUpperCase() + photo.title.slice(1) : ""}
                     </p>
                   </div>
                 </Link>
