@@ -46,7 +46,7 @@ const AlbumDetails = () => {
   }, []);
 
   return (
-    <div className="relative md:min-h-[calc(100svh-68px)] flex flex-col sm:flex-row sm:items-start gap-4 sm:pt-24">
+    <div className="relative md:min-h-[calc(100svh-68px)] flex flex-col sm:flex-row sm:items-start gap-4 pt-24">
       <ScrollToTopButton />
       <BackPreviousButton />
       <section className="flex flex-col items-start gap-6 justify-start sm:w-[16%] sm:sticky sm:top-[68px]">
@@ -74,7 +74,7 @@ const AlbumDetails = () => {
         )}
 
         {photosByAlbum && photosByAlbum.length > 0 && (
-          <div className="columns-2 sm:columns-3 lg:columns-4 xl:columns-5 gap-4 space-y-4 lg:gap-10 lg:space-y-10">
+          <div className="columns-2 md:columns-3 lg:columns-4 xl:columns-5 gap-4 space-y-4 lg:gap-10 lg:space-y-10">
             {photosByAlbum.map((photo, index) => {
               // mixed sizes
               const sizeClass = (() => {

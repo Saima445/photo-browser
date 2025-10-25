@@ -21,7 +21,7 @@ const ScrollToTopButton = () => {
       size="lgIcon"
       onClick={() => document.getElementById("scroll-root")?.scrollTo({ top: 0, behavior: "smooth" })}
       className={`
-        fixed bottom-6 right-6 z-[999]
+        fixed bottom-6 right-4 sm:right-6 z-[999]
         transition-all duration-500
         ${showTopArrow ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6 pointer-events-none"}
       `}

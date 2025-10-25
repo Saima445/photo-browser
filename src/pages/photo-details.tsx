@@ -63,7 +63,7 @@ const PhotoDetails = () => {
   }, []);
 
   return (
-    <div className="relative flex flex-col gap-24">
+    <div className="relative flex flex-col gap-24 pt-24 md:pt-0">
       <ScrollToTopButton />
       <BackPreviousButton />
       <section className="md:h-[calc(100svh-68px)] gap-6 md:gap-0 pb-8 flex flex-col md:flex-row">
