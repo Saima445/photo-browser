@@ -12,9 +12,9 @@ export const ModeToggle = () => {
   const [open, setOpen] = useState(false);
 
   const modes: { name: ThemeOption; icon: JSX.Element }[] = [
-    { name: "light", icon: <Sun className="h-4 w-4" strokeWidth={1} /> },
-    { name: "dark", icon: <Moon className="h-4 w-4" strokeWidth={1} /> },
-    { name: "system", icon: <Bolt className="h-4 w-4" strokeWidth={1} /> },
+    { name: "light", icon: <Sun className="h-5 w-5" strokeWidth={1} /> },
+    { name: "dark", icon: <Moon className="h-5 w-5" strokeWidth={1} /> },
+    { name: "system", icon: <Bolt className="h-5 w-5" strokeWidth={1} /> },
   ];
 
   const active = modes.find((m) => m.name === theme) ?? modes[2];

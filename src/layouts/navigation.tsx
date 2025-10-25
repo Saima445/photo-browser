@@ -8,11 +8,11 @@ import { ModeToggle } from "@/elements/mode-toggle";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 
-const navLink = cva("uppercase text-sm transition-colors font-extralight hover:text-primary", {
+const navLink = cva("uppercase text-sm transition-colors font-extralight hover:text-muted-foreground", {
   variants: {
     active: {
-      true: "text-primary font-semibold",
-      false: "text-muted-foreground",
+      true: "font-semibold",
+      false: "",
     },
     isMobile: {
       true: "text-xl flex items-center gap-0",

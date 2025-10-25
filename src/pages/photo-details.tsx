@@ -1,8 +1,8 @@
 import { Popover, PopoverContent, PopoverTrigger } from "@radix-ui/react-popover";
 import { useQuery } from "@tanstack/react-query";
-import { ArrowDown, Building2, Globe, Loader, Mail, Phone, RefreshCw } from "lucide-react";
+import { ArrowDown, Building2, Download, Globe, Loader, Mail, Phone, RefreshCw, Share2 } from "lucide-react";
 import { useLayoutEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 import { getAlbumByIdWithClient } from "@/api/jsonplaceholder/albums";
 import { getPhotoByIdWithClient, getPhotosByAlbumIdWithClient } from "@/api/jsonplaceholder/photos";
@@ -14,10 +14,11 @@ import ScrollToTopButton from "@/elements/button-scroll-to-top";
 import { ImageWithFallback } from "@/elements/image-with-fallback";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
+import { downloadPhoto, sharePhoto } from "@/utils/photo-actions";
 import { photoAspectClass } from "@/utils/photo-aspect-class";
 
 const PhotoDetails = () => {
-  const { id } = useParams<{ id: string }>();
+  const { photoId } = useParams<{ photoId: string }>();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
 
@@ -27,16 +28,16 @@ const PhotoDetails = () => {
     isError,
     refetch,
   } = useQuery({
-    queryKey: ["photo", id],
-    queryFn: () => getPhotoByIdWithClient(id!),
-    enabled: !!id,
+    queryKey: ["photo", photoId],
+    queryFn: () => getPhotoByIdWithClient(photoId!),
+    enabled: !!photoId,
     placeholderData: (prev) => prev,
   });
 
   const { data: picsumData } = useQuery({
-    queryKey: ["picsum photo data", id],
-    queryFn: () => getPicsumPhotoInfo(id!),
-    enabled: !!id,
+    queryKey: ["picsum photo data", photoId],
+    queryFn: () => getPicsumPhotoInfo(photoId!),
+    enabled: !!photoId,
   });
 
   const albumId = photo?.albumId;
@@ -69,7 +70,7 @@ const PhotoDetails = () => {
     <div className="relative flex flex-col gap-24 pt-24 md:pt-0">
       <ScrollToTopButton />
       <BackPreviousButton />
-      <section className="md:h-[calc(100svh-68px)] md:max-h-[1000px] gap-6 pb-8 flex flex-col md:flex-row">
+      <section className="w-full md:h-[calc(100svh-68px)] md:max-h-[1000px] gap-6 pb-8 flex flex-col md:flex-row">
         <div className="flex-1 flex items-center justify-center relative">
           {isLoading && <Loader className="h-8 w-8 animate-spin text-primary my-32" />}
           {photo && (
@@ -80,6 +81,16 @@ const PhotoDetails = () => {
               imageClassName="object-contain"
             />
           )}
+          {isError && (
+            <div className="w-full h-full flex flex-col items-center justify-center gap-4">
+              <h3>Something went wrong with fetching</h3>
+              <p className="text-muted-foreground mb-6">But give it one more go</p>
+              <Button onClick={() => refetch()}>
+                <RefreshCw />
+              </Button>
+            </div>
+          )}
+
           {!isMobile && (
             <div className="absolute bottom-0 left-0 flex">
               <ArrowDown strokeWidth={1} />
@@ -90,20 +101,47 @@ const PhotoDetails = () => {
             </div>
           )}
         </div>
-        <div className="md:w-[35%] p-8 lg:p-12 rounded-3xl bg-card flex flex-col justify-start gap-8 overflow-y-auto no-scrollbar">
+        <div className="md:w-[35%] p-8 lg:p-12 rounded-3xl bg-card flex flex-col justify-start gap-10 overflow-y-auto no-scrollbar">
           <div className=" flex flex-col justify-start gap-2">
+            {/* photo */}
             <h3 className="mb-4">Photo details</h3>
-
-            <p>Title: {photo?.title ? photo.title.charAt(0).toUpperCase() + photo.title.slice(1) : ""}</p>
+            <p>Title: {photo?.title ? photo.title.charAt(0).toUpperCase() + photo.title.slice(1) : "..."}</p>
             <p>Photographer: {picsumData?.author}</p>
             <p>
               Resolution: {picsumData?.width} x {picsumData?.height}
             </p>
+            <div className="flex items-center justify-start flex-wrap gap-4 mt-4">
+              <Button
+                variant="secondary"
+                size="icon"
+                onClick={() =>
+                  sharePhoto({
+                    photoId: photo?.id,
+                    title: photo?.title,
+                  })
+                }
+              >
+                <Share2 className="h-5 w-5" strokeWidth={1} />
+              </Button>
+              {photo && (
+                <Button
+                  variant="secondary"
+                  size="icon"
+                  onClick={() => downloadPhoto({ photoUrl: photo?.url, title: photo?.title })}
+                >
+                  <Download className="h-5 w-5" strokeWidth={1} />
+                </Button>
+              )}
+            </div>
           </div>
+
+          {/* album */}
           <div className="flex flex-col justify-start gap-2 bg-secondary p-6 rounded-3xl">
             <h3 className="mb-4">Album details</h3>
             <p>Album: {album?.title ? album.title.charAt(0).toUpperCase() + album.title.slice(1) : "..."}</p>
-            <p>Album No. {album ? album.id : "..."}</p>
+            <Link to={`/albums/${album?.id}`}>
+              <p className="hover:text-blue-400">Album No. {album ? album.id : "..."}</p>
+            </Link>
             <p>Who made this album: {user ? user.name : "Couldn't find user"}</p>
 
             <div className="flex items-center justify-center flex-wrap gap-4 mt-4">
@@ -111,7 +149,7 @@ const PhotoDetails = () => {
                 href={`mailto:${user?.email}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-2 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+                className="h-10 w-10 p-2 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors flex justify-center items-center"
                 title="Send email"
               >
                 <Mail className="h-5 w-5" strokeWidth={1} />
@@ -119,7 +157,7 @@ const PhotoDetails = () => {
 
               <a
                 href={`tel:${user?.phone}`}
-                className="p-2 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+                className="h-10 w-10 p-2 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors flex justify-center items-center"
                 title="Call"
               >
                 <Phone className="h-5 w-5" strokeWidth={1} />
@@ -129,14 +167,14 @@ const PhotoDetails = () => {
                 href={`https://${user?.website}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-2 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+                className="h-10 w-10 p-2 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors flex justify-center items-center"
                 title="Visit website"
               >
                 <Globe className="h-5 w-5" strokeWidth={1} />
               </a>
 
               <Popover>
-                <PopoverTrigger className="p-2 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors">
+                <PopoverTrigger className="h-10 w-10 p-2 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors flex justify-center items-center">
                   <Building2 className="h-5 w-5" strokeWidth={1} />
                 </PopoverTrigger>
                 <PopoverContent
@@ -175,6 +213,7 @@ const PhotoDetails = () => {
           </div>
         )}
 
+        <h2 className="mb-8 ">More photos from this album</h2>
         {isError && (
           <div className="w-full h-[50dvh] flex flex-col items-center justify-center gap-4">
             <h3>Something went wrong with fetching</h3>
@@ -184,7 +223,6 @@ const PhotoDetails = () => {
             </Button>
           </div>
         )}
-        <h2 className="mb-8 ">More photos from this album</h2>
         {photosByAlbum && photosByAlbum.length > 0 && (
           <div className="columns-2 sm:columns-3 md:columns-4 xl:columns-5 gap-4 space-y-4 lg:gap-10 lg:space-y-10">
             {photosByAlbum.map((photo, index) => {

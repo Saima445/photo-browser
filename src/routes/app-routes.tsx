@@ -19,7 +19,7 @@ export const AppRoutes = () => {
     <Routes>
       <Route element={<MainLayout />}>
         <Route path="/" element={<Home />} />
-        <Route path="/photos/:id" element={<PhotoDetails />} />
+        <Route path="/photos/:photoId" element={<PhotoDetails />} />
         <Route path="/albums" element={<Albums />} />
         <Route path="/albums/:albumId" element={<AlbumDetails />} />
 

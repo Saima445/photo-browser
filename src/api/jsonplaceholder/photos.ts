@@ -20,8 +20,8 @@ export const getPhotosWithClient = async (): Promise<Photo[]> => {
   }));
 };
 
-export const getPhotoByIdWithClient = async (id: string): Promise<Photo> => {
-  const photo = await apiClient<Photo>(`/photos/${id}`);
+export const getPhotoByIdWithClient = async (photoId: string): Promise<Photo> => {
+  const photo = await apiClient<Photo>(`/photos/${photoId}`);
 
   return {
     ...photo,
