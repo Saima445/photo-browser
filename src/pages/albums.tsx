@@ -1,14 +1,19 @@
 import { useQuery } from "@tanstack/react-query";
 import { Folder, Loader, RefreshCw } from "lucide-react";
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { getAlbumsWithClient } from "@/api/jsonplaceholder/albums";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import BackPreviousButton from "@/elements/button-back-to-previous";
 import { cn } from "@/lib/utils";
 import { photoAspectClass } from "@/utils/photo-aspect-class";
 
 const Albums = () => {
+  const [selectedAlbum, setSelectedAlbum] = useState<number | null>(null);
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+
   const {
     data: albums,
     isLoading,
@@ -19,28 +24,45 @@ const Albums = () => {
     queryFn: getAlbumsWithClient,
   });
 
+  const filteredAlbums = useMemo(() => {
+    if (!albums) return albums;
+
+    let result = albums;
+
+    if (selectedAlbum) {
+      result = result.filter((album) => album.id === selectedAlbum);
+    }
+
+    return [...result].sort((a, b) => (sortOrder === "asc" ? a.id - b.id : b.id - a.id));
+  }, [albums, selectedAlbum, sortOrder]);
+
   return (
     <div className="relative md:h-[calc(100svh-68px)] pt-16 sm:pt-24">
       <BackPreviousButton />
       <section>
-        {/* <div className="sm:sticky sm:top-[68px] w-full flex justify-center mb-8 z-999">
-          <Select
-            value={selectedUser === null ? "" : String(selectedUser)}
-            onValueChange={(value) => setSelectedUser(value === "all" ? null : Number(value))}
-          >
-            <SelectTrigger className="w-[50%]">
-              <SelectValue placeholder="Filter photos by user" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All users</SelectItem>
-              {users?.map((user) => (
-                <SelectItem key={user.id} value={String(user.id)}>
-                  {user.username}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div> */}
+        <div className="flex justify-between flex-wrap items-center gap-2 mb-6">
+          <h2 className="leading-none">All albums</h2>
+          <div className="flex flex-wrap gap-1">
+            <Input
+              id="albumId"
+              type="number"
+              placeholder="Enter album number..."
+              value={selectedAlbum === null ? "" : String(selectedAlbum)}
+              onChange={(e) => {
+                const value = e.target.value;
+                setSelectedAlbum(value === "" ? null : Number(value));
+              }}
+              className="w-[10rem] text-center"
+            />
+            <Button
+              variant="outline"
+              onClick={() => setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"))}
+              className="h-10 w-[7rem]"
+            >
+              Sort: {sortOrder === "asc" ? "Asc ↑" : "Desc ↓"}
+            </Button>
+          </div>
+        </div>
         {isLoading && (
           <div className="w-full h-[50dvh] flex items-center justify-center">
             <Loader className="h-8 w-8 animate-spin text-primary" />
@@ -57,9 +79,9 @@ const Albums = () => {
           </div>
         )}
 
-        {albums && albums.length > 0 && (
+        {filteredAlbums && filteredAlbums.length > 0 && (
           <div className="columns-2 sm:columns-3 md:columns-4 xl:columns-5 gap-4 space-y-4 lg:gap-10 lg:space-y-10">
-            {albums.map((album, index) => {
+            {filteredAlbums.map((album, index) => {
               return (
                 <Link
                   key={album.id}

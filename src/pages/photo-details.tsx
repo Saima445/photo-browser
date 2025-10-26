@@ -157,11 +157,11 @@ const PhotoDetails = () => {
           {/* album */}
           <div className="flex flex-col justify-start gap-2 bg-secondary p-6 rounded-3xl">
             <h3 className="mb-4">Album details</h3>
-            <p>Album: {album?.title ? album.title.charAt(0).toUpperCase() + album.title.slice(1) : "..."}</p>
+            <p>Name: {album?.title ? album.title.charAt(0).toUpperCase() + album.title.slice(1) : "..."}</p>
             <Link to={`/albums/${album?.id}`}>
               <p className="hover:text-blue-400">Album No. {album ? album.id : "..."}</p>
             </Link>
-            <p>Who made this album: {user ? user.name : "Couldn't find user"}</p>
+            <p>Created by: {user ? user.name : "Couldn't find user"}</p>
 
             <div className="flex items-center justify-center flex-wrap gap-4 mt-4">
               <a

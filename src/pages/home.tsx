@@ -85,10 +85,10 @@ const Home = () => {
             onValueChange={(value) => setSelectedUser(value === "all" ? null : Number(value))}
           >
             <SelectTrigger className="md:w-[55%]">
-              <SelectValue placeholder="Filter photos by user" />
+              <SelectValue placeholder="Filter photos by uploader" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All users</SelectItem>
+              <SelectItem value="all">All uploaders</SelectItem>
               {users?.map((user) => (
                 <SelectItem key={user.id} value={String(user.id)}>
                   {user.username}

@@ -45,7 +45,7 @@ const Profile = () => {
       <ScrollToTopButton />
       <BackPreviousButton />
       <section>
-        <h2 className="font-semibold leading-none mb-6">Photos you liked </h2>
+        <h2 className="leading-none mb-6">Photos you liked</h2>
         {isLoading && (
           <div className="w-full h-[50dvh] flex items-center justify-center">
             <Loader className="h-8 w-8 animate-spin text-primary" />
