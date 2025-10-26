@@ -47,7 +47,7 @@ const AlbumDetails = () => {
   }, []);
 
   return (
-    <div className="relative md:min-h-[calc(100svh-68px)] flex flex-col sm:flex-row sm:items-start gap-4 pt-24">
+    <div className="relative md:min-h-[calc(100svh-68px)] flex flex-col sm:flex-row sm:items-start gap-4 pt-16 sm:pt-24">
       <ScrollToTopButton />
       <BackPreviousButton />
       <section className="flex flex-col items-start gap-6 justify-start sm:w-[16%] sm:sticky sm:top-[68px]">

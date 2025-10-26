@@ -1,8 +1,7 @@
 import { apiClient } from "@/api/jsonplaceholder/client";
 import { imageUrl } from "@/utils/const";
 
-// type safe way
-interface Photo {
+export interface Photo {
   id: number;
   title: string;
   url: string;

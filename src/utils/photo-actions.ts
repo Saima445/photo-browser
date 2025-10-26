@@ -15,7 +15,7 @@ export const sharePhoto = async ({ photoId, title }: PhotoShareParams): Promise<
     const shareUrl = photoId ? `${window.location.origin}/photos/${photoId}` : window.location.href;
 
     if (!shareUrl) {
-      toast("Missing URL");
+      toast.error("Missing URL");
       return;
     }
 
@@ -27,19 +27,19 @@ export const sharePhoto = async ({ photoId, title }: PhotoShareParams): Promise<
       });
     } else {
       await navigator.clipboard.writeText(shareUrl);
-      toast("Link copied to clipboard!");
+      toast.success("Link copied to clipboard!");
     }
   } catch (err: any) {
     if (err?.name === "AbortError") return;
     console.error("Share failed:", err);
-    toast("Failed to share the photo");
+    toast.error("Failed to share the photo");
   }
 };
 
 export const downloadPhoto = async ({ photoUrl, title }: PhotoDownloadParams): Promise<void> => {
   try {
     if (!photoUrl) {
-      toast("Missing photo URL");
+      toast.error("Missing photo URL");
       return;
     }
 
@@ -62,9 +62,9 @@ export const downloadPhoto = async ({ photoUrl, title }: PhotoDownloadParams): P
     document.body.removeChild(link);
     window.URL.revokeObjectURL(blobUrl);
 
-    toast("Photo downloaded");
+    toast.success("Photo downloaded");
   } catch (err) {
     console.error("Error downloading photo:", err);
-    toast("Failed to download the photo");
+    toast.error("Failed to download the photo");
   }
 };

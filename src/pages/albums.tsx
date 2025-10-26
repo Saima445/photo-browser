@@ -20,7 +20,7 @@ const Albums = () => {
   });
 
   return (
-    <div className="relative md:h-[calc(100svh-68px)] pt-24">
+    <div className="relative md:h-[calc(100svh-68px)] pt-16 sm:pt-24">
       <BackPreviousButton />
       <section>
         {/* <div className="sm:sticky sm:top-[68px] w-full flex justify-center mb-8 z-999">

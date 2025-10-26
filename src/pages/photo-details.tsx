@@ -1,6 +1,7 @@
 import { Popover, PopoverContent, PopoverTrigger } from "@radix-ui/react-popover";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowDown, Building2, Download, Globe, Loader, Mail, Phone, RefreshCw, Share2 } from "lucide-react";
+import { Heart } from "lucide-react";
 import { useLayoutEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
@@ -12,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import BackPreviousButton from "@/elements/button-back-to-previous";
 import ScrollToTopButton from "@/elements/button-scroll-to-top";
 import { ImageWithFallback } from "@/elements/image-with-fallback";
+import { useLocalLikes } from "@/hooks/use-local-favorites";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 import { downloadPhoto, sharePhoto } from "@/utils/photo-actions";
@@ -21,6 +23,7 @@ const PhotoDetails = () => {
   const { photoId } = useParams<{ photoId: string }>();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
+  const { toggleLike, isLiked } = useLocalLikes();
 
   const {
     data: photo,
@@ -67,7 +70,7 @@ const PhotoDetails = () => {
   }, []);
 
   return (
-    <div className="relative flex flex-col gap-24 pt-24 md:pt-0">
+    <div className="relative flex flex-col gap-24 pt-16 md:pt-0">
       <ScrollToTopButton />
       <BackPreviousButton />
       <section className="w-full md:h-[calc(100svh-68px)] md:max-h-[1000px] gap-6 pb-8 flex flex-col md:flex-row">
@@ -111,6 +114,22 @@ const PhotoDetails = () => {
               Resolution: {picsumData?.width} x {picsumData?.height}
             </p>
             <div className="flex items-center justify-start flex-wrap gap-4 mt-4">
+              {photo && (
+                <Button
+                  variant={isLiked(photo.id) ? "ghost" : "secondary"}
+                  size="icon"
+                  onClick={() => toggleLike(photo.id)}
+                  title={isLiked(photo.id) ? "Unlike" : "Like"}
+                >
+                  <Heart
+                    className={cn(
+                      "h-5 w-5 transition-colors",
+                      isLiked(photo.id) ? "!p-0 !h-10 !w-10 fill-red-500 text-red-500" : ""
+                    )}
+                    strokeWidth={1}
+                  />
+                </Button>
+              )}
               <Button
                 variant="secondary"
                 size="icon"

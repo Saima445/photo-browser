@@ -11,13 +11,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import ScrollToTopButton from "@/elements/button-scroll-to-top";
 import { Hero } from "@/elements/hero";
 import { ImageWithFallback } from "@/elements/image-with-fallback";
-import { useTheme } from "@/features/theme-provider";
 import { cn } from "@/lib/utils";
 import { photoAspectClass } from "@/utils/photo-aspect-class";
 
 const Home = () => {
   const [selectedUser, setSelectedUser] = useState<number | null>(null);
-  const { theme } = useTheme();
 
   const {
     data: photos,
@@ -77,12 +75,7 @@ const Home = () => {
   return (
     <div className="relative flex flex-col gap-24">
       <ScrollToTopButton />
-      <section
-        className="h-[calc(100svh-68px)] max-h-[1000px] bg-contain bg-center bg-no-repeat sm:bg-fixed transition-[background-image] duration-500"
-        style={{
-          backgroundImage: theme === "dark" ? "url('/images/bg-dark.jpg')" : "url('/images/bg-light.jpg')",
-        }}
-      >
+      <section className="h-[calc(100svh-68px)] max-h-[1000px] pb-8">
         <Hero />
       </section>
       <section id="photos">
@@ -122,7 +115,7 @@ const Home = () => {
 
         {filteredPhotos && filteredPhotos.length > 0 && (
           <div className="columns-2 sm:columns-3 md:columns-4 xl:columns-5 gap-4 space-y-4 lg:gap-10 lg:space-y-10">
-            {filteredPhotos.slice(0, 1000).map((photo, index) => {
+            {filteredPhotos.slice(0, 100).map((photo, index) => {
               return (
                 <Link
                   key={photo.id}
