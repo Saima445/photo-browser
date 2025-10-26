@@ -7,6 +7,7 @@ import { getAlbumsWithClient } from "@/api/jsonplaceholder/albums";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import BackPreviousButton from "@/elements/button-back-to-previous";
+import ScrollToTopButton from "@/elements/button-scroll-to-top";
 import { cn } from "@/lib/utils";
 import { photoAspectClass } from "@/utils/photo-aspect-class";
 
@@ -38,6 +39,7 @@ const Albums = () => {
 
   return (
     <div className="relative md:h-[calc(100svh-68px)] pt-16 sm:pt-24">
+      <ScrollToTopButton />
       <BackPreviousButton />
       <section>
         <div className="flex justify-between flex-wrap items-center gap-2 mb-6">

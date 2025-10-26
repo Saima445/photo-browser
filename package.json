@@ -5,9 +5,9 @@
   "type": "module",
   "homepage": "https://saima445.github.io/photo-browser/",
   "scripts": {
+    "dev": "vite",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
-    "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"

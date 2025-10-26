@@ -42,10 +42,6 @@ const AlbumDetails = () => {
     enabled: !!userId,
   });
 
-  useLayoutEffect(() => {
-    document.getElementById("scroll-root")?.scrollTo({ top: 0, behavior: "instant" });
-  }, []);
-
   return (
     <div className="relative md:min-h-[calc(100svh-68px)] flex flex-col sm:flex-row sm:items-start gap-4 pt-16 sm:pt-24">
       <ScrollToTopButton />
@@ -82,7 +78,7 @@ const AlbumDetails = () => {
                   key={photo.id}
                   onClick={() => {
                     navigate(`/photos/${photo.id}`);
-                    document.getElementById("scroll-root")?.scrollTo({ top: 0, behavior: "smooth" });
+                    window.scrollTo({ top: 0, behavior: "smooth" });
                   }}
                   className={cn(
                     "group relative block overflow-hidden transform transition duration-300 hover:scale-[1.03] break-inside-avoid",

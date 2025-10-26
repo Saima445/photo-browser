@@ -7,19 +7,16 @@ const ScrollToTopButton = () => {
   const [showTopArrow, setShowTopArrow] = useState(false);
 
   useEffect(() => {
-    const el = document.getElementById("scroll-root");
-    if (!el) return;
-
-    const onScroll = () => setShowTopArrow(el.scrollTop > 300);
-    el.addEventListener("scroll", onScroll);
-    return () => el.removeEventListener("scroll", onScroll);
+    const onScroll = () => setShowTopArrow(window.scrollY > 300);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
     <Button
       variant="ghost"
       size="lgIcon"
-      onClick={() => document.getElementById("scroll-root")?.scrollTo({ top: 0, behavior: "smooth" })}
+      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
       className={`
         fixed bottom-6 right-4 sm:right-6 z-[999]
         transition-all duration-500

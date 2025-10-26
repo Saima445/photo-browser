@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Loader, RefreshCw } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { getAlbumsWithClient } from "@/api/jsonplaceholder/albums";
@@ -37,32 +37,6 @@ const Home = () => {
     queryKey: ["albums"],
     queryFn: getAlbumsWithClient,
   });
-
-  // this for now until I study about createBrowserRouter
-  useEffect(() => {
-    const el = document.getElementById("scroll-root");
-    if (!el) return;
-
-    const onScroll = () => {
-      sessionStorage.setItem("homeScroll", String(el.scrollTop));
-    };
-
-    el.addEventListener("scroll", onScroll);
-    return () => el.removeEventListener("scroll", onScroll);
-  }, []);
-
-  useEffect(() => {
-    const el = document.getElementById("scroll-root");
-    if (!el) return;
-
-    const savedScroll = sessionStorage.getItem("homeScroll");
-    if (savedScroll) {
-      el.scrollTo({
-        top: Number(savedScroll),
-        behavior: "instant",
-      });
-    }
-  }, []);
 
   const filteredPhotos = useMemo(() => {
     if (!selectedUser || !albums || !photos) return photos;

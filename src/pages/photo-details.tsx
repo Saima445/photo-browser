@@ -65,10 +65,6 @@ const PhotoDetails = () => {
     enabled: !!userId,
   });
 
-  useLayoutEffect(() => {
-    document.getElementById("scroll-root")?.scrollTo({ top: 0, behavior: "instant" });
-  }, []);
-
   return (
     <div className="relative flex flex-col gap-24 pt-16 md:pt-0">
       <ScrollToTopButton />
@@ -250,7 +246,7 @@ const PhotoDetails = () => {
                   key={photo.id}
                   onClick={() => {
                     navigate(`/photos/${photo.id}`);
-                    document.getElementById("scroll-root")?.scrollTo({ top: 0, behavior: "smooth" });
+                    window.scrollTo({ top: 0, behavior: "smooth" });
                   }}
                   className={cn(
                     "group relative block overflow-hidden transform transition duration-300 hover:scale-[1.03] break-inside-avoid",
