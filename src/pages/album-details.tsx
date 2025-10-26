@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import { Loader, RefreshCw } from "lucide-react";
-import { useLayoutEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { getAlbumByIdWithClient } from "@/api/jsonplaceholder/albums";

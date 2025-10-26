@@ -2,7 +2,6 @@ import { Popover, PopoverContent, PopoverTrigger } from "@radix-ui/react-popover
 import { useQuery } from "@tanstack/react-query";
 import { ArrowDown, Building2, Download, Globe, Loader, Mail, Phone, RefreshCw, Share2 } from "lucide-react";
 import { Heart } from "lucide-react";
-import { useLayoutEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 import { getAlbumByIdWithClient } from "@/api/jsonplaceholder/albums";
