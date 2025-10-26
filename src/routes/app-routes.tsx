@@ -43,6 +43,7 @@ export const router = createBrowserRouter(
     },
   ],
   {
+    basename: "/photo-browser/",
     future: {
       v7_startTransition: true,
       v7_relativeSplatPath: true,

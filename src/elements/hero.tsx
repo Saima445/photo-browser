@@ -10,7 +10,10 @@ export const Hero = () => {
     <div
       className="h-full w-full bg-cover sm:bg-contain bg-center bg-no-repeat sm:bg-fixed transition-[background-image] duration-500"
       style={{
-        backgroundImage: theme === "dark" ? "url('/images/bg-dark.jpg')" : "url('/images/bg-light.jpg')",
+        backgroundImage:
+          theme === "dark"
+            ? `url('${import.meta.env.BASE_URL}images/bg-dark.jpg')`
+            : `url('${import.meta.env.BASE_URL}images/bg-light.jpg')`,
       }}
     >
       <div className="flex flex-col justify-start">
