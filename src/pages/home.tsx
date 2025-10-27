@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Loader, RefreshCw } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { getAlbumsWithClient } from "@/api/jsonplaceholder/albums";
@@ -16,6 +16,8 @@ import { photoAspectClass } from "@/utils/photo-aspect-class";
 
 const Home = () => {
   const [selectedUser, setSelectedUser] = useState<number | null>(null);
+  const [visibleCount, setVisibleCount] = useState(100);
+  const loadMoreRef = useRef<HTMLDivElement>(null);
 
   const {
     data: photos,
@@ -45,6 +47,27 @@ const Home = () => {
 
     return photos.filter((photo) => userAlbumIds.includes(photo.albumId));
   }, [selectedUser, photos, albums]);
+
+  useEffect(() => {
+    if (!filteredPhotos || filteredPhotos.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const first = entries[0];
+        if (first.isIntersecting && visibleCount < filteredPhotos.length) {
+          setVisibleCount((prev) => prev + 100);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    const current = loadMoreRef.current;
+    if (current) observer.observe(current);
+
+    return () => {
+      if (current) observer.unobserve(current);
+    };
+  }, [filteredPhotos, visibleCount]);
 
   return (
     <div className="relative flex flex-col gap-24">
@@ -88,28 +111,37 @@ const Home = () => {
         )}
 
         {filteredPhotos && filteredPhotos.length > 0 && (
-          <div className="columns-2 sm:columns-3 md:columns-4 xl:columns-5 gap-4 space-y-4 lg:gap-10 lg:space-y-10">
-            {filteredPhotos.slice(0, 100).map((photo, index) => {
-              return (
-                <Link
-                  key={photo.id}
-                  to={`/photos/${photo.id}`}
-                  className={cn(
-                    "group relative block overflow-hidden transform transition duration-300 hover:scale-[1.03] break-inside-avoid",
-                    photoAspectClass(index)
-                  )}
-                >
-                  <ImageWithFallback src={photo.thumbnailUrl} alt={photo.title} />
+          <>
+            <div className="columns-2 sm:columns-3 md:columns-4 xl:columns-5 gap-4 space-y-4 lg:gap-10 lg:space-y-10">
+              {filteredPhotos.slice(0, visibleCount).map((photo, index) => {
+                return (
+                  <Link
+                    key={photo.id}
+                    to={`/photos/${photo.id}`}
+                    className={cn(
+                      "group relative block overflow-hidden transform transition duration-300 hover:scale-[1.03] break-inside-avoid",
+                      photoAspectClass(index)
+                    )}
+                  >
+                    <ImageWithFallback src={photo.thumbnailUrl} alt={photo.title} />
 
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/40 transition-colors duration-500">
-                    <p className="opacity-0 group-hover:opacity-100 text-white text-center px-2 transition-opacity duration-500">
-                      {photo.title ? photo.title.charAt(0).toUpperCase() + photo.title.slice(1) : ""}
-                    </p>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/40 transition-colors duration-500">
+                      <p className="opacity-0 group-hover:opacity-100 text-white text-center px-2 transition-opacity duration-500">
+                        {photo.title ? photo.title.charAt(0).toUpperCase() + photo.title.slice(1) : ""}
+                      </p>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+            <div ref={loadMoreRef} className="w-full py-12 flex justify-center">
+              {visibleCount < filteredPhotos.length ? (
+                <Loader className="h-6 w-6 animate-spin text-primary" />
+              ) : (
+                <p className="text-muted-foreground text-sm">All photos loaded ({filteredPhotos.length})</p>
+              )}
+            </div>
+          </>
         )}
       </section>
     </div>
