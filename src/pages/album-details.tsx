@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { Loader, RefreshCw } from "lucide-react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Heart, Loader, RefreshCw } from "lucide-react";
+import { Link, useParams } from "react-router-dom";
 
 import { getAlbumByIdWithClient } from "@/api/jsonplaceholder/albums";
 import { getPhotosByAlbumIdWithClient } from "@/api/jsonplaceholder/photos";
@@ -9,12 +9,13 @@ import { Button } from "@/components/ui/button";
 import BackPreviousButton from "@/elements/button-back-to-previous";
 import ScrollToTopButton from "@/elements/button-scroll-to-top";
 import { ImageWithFallback } from "@/elements/image-with-fallback";
+import { useLocalLikes } from "@/hooks/use-local-favorites";
 import { cn } from "@/lib/utils";
 import { photoAspectClass } from "@/utils/photo-aspect-class";
 
 const AlbumDetails = () => {
   const { albumId } = useParams<{ albumId: string }>();
-  const navigate = useNavigate();
+  const { isLiked, toggleLike } = useLocalLikes();
 
   const { data: album } = useQuery({
     queryKey: ["album", albumId],
@@ -71,28 +72,44 @@ const AlbumDetails = () => {
 
         {photosByAlbum && photosByAlbum.length > 0 && (
           <div className="columns-2 md:columns-3 lg:columns-4 xl:columns-5 gap-4 space-y-4 lg:gap-10 lg:space-y-10">
-            {photosByAlbum.map((photo, index) => {
-              return (
-                <div
-                  key={photo.id}
-                  onClick={() => {
-                    navigate(`/photos/${photo.id}`);
-                    window.scrollTo({ top: 0, behavior: "smooth" });
-                  }}
+            {photosByAlbum.map((photo, index) => (
+              <div key={photo.id} className="relative group">
+                <Link
+                  to={`/photos/${photo.id}`}
                   className={cn(
-                    "group relative block overflow-hidden transform transition duration-300 hover:scale-[1.03] break-inside-avoid",
+                    "block overflow-hidden transform transition duration-300 hover:scale-[1.03] break-inside-avoid",
                     photoAspectClass(index)
                   )}
                 >
                   <ImageWithFallback src={photo.thumbnailUrl} alt={photo.title} />
+
                   <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/40 transition-colors duration-500">
                     <p className="opacity-0 group-hover:opacity-100 text-white text-center px-2 transition-opacity duration-500">
                       {photo.title ? photo.title.charAt(0).toUpperCase() + photo.title.slice(1) : ""}
                     </p>
                   </div>
-                </div>
-              );
-            })}
+                </Link>
+
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    toggleLike(photo.id);
+                  }}
+                  title={isLiked(photo.id) ? "Unlike" : "Like"}
+                  className="absolute top-1 right-1 p-0 rounded-full transition-all duration-300 z-10 opacity-0 group-hover:opacity-100 hover:cursor-pointer"
+                >
+                  <Heart
+                    className={cn(
+                      "!h-6 !w-6 transition-colors duration-300",
+                      isLiked(photo.id) ? "fill-red-500 text-red-500" : "text-white"
+                    )}
+                    strokeWidth={1}
+                  />
+                </Button>
+              </div>
+            ))}
           </div>
         )}
       </section>

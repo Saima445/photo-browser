@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@400;600;800&display=swap");
 
 @import "tailwindcss";
 @tailwind base;
@@ -6,7 +6,7 @@
 @tailwind utilities;
 
 @theme inline {
-  --font-playfair: "Playfair Display", serif;
+  --font-bodoni: "Bodoni Moda", serif;
 }
 
 @theme inline {
@@ -97,7 +97,7 @@
   --muted-foreground: oklch(0.708 0 0);
   --accent: hsl(0, 0%, 14%);
   --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
+  --destructive: oklch(94.118% 0.20031 105.701);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
@@ -142,7 +142,7 @@
 
   h1 {
     font-size: clamp(4rem, 6vw + 1rem, 7rem);
-    @apply uppercase tracking-tight;
+    @apply uppercase font-extralight tracking-tight;
   }
 
   h2 {
@@ -169,6 +169,6 @@
   h3,
   h4,
   h5 {
-    @apply font-playfair;
+    @apply font-bodoni;
   }
 }

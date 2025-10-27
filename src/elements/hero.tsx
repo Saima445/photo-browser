@@ -29,7 +29,7 @@ export const Hero = () => {
             <ArrowDown className="h-12 w-12 shrink-0" strokeWidth={1} />
           </Button>
         </div>
-        <h1 className="font-playfair font-bold">better pixels</h1>
+        <h1 className="font-bodoni">better pixels</h1>
         <h1 className="sm:self-end">since 2025</h1>
       </div>
     </div>

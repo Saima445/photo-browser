@@ -6,7 +6,7 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        baskerville: ['"Playfair Display"', "serif"],
+        baskerville: ["Bodoni Moda", "serif"],
       },
     },
   },

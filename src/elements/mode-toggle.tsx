@@ -2,6 +2,7 @@ import { Bolt, Moon, Sun } from "lucide-react";
 import { type JSX, useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useTheme } from "@/features/theme-provider";
 import { cn } from "@/lib/utils";
 
@@ -46,10 +47,14 @@ export const ModeToggle = () => {
           </Button>
         ))}
       </div>
-
-      <Button variant="secondary" size="icon">
-        {active.icon}
-      </Button>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button variant="secondary" size="icon">
+            {active.icon}
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent className="capitalize">{active.name}</TooltipContent>
+      </Tooltip>
     </div>
   );
 };

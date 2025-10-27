@@ -111,22 +111,25 @@ const PhotoDetails = () => {
             <div className="flex items-center justify-start flex-wrap gap-4 mt-4">
               {photo && (
                 <Button
-                  variant={isLiked(photo.id) ? "ghost" : "secondary"}
+                  variant="ghost"
                   size="icon"
                   onClick={() => toggleLike(photo.id)}
                   title={isLiked(photo.id) ? "Unlike" : "Like"}
+                  className="hover:cursor-pointer"
                 >
                   <Heart
                     className={cn(
-                      "h-5 w-5 transition-colors",
-                      isLiked(photo.id) ? "!p-0 !h-10 !w-10 fill-red-500 text-red-500" : ""
+                      "!h-7 !w-7 transition-colors",
+                      isLiked(photo.id)
+                        ? "fill-red-500 text-red-500"
+                        : "text-foreground hover:text-foreground/80"
                     )}
                     strokeWidth={1}
                   />
                 </Button>
               )}
               <Button
-                variant="secondary"
+                variant="ghost"
                 size="icon"
                 onClick={() =>
                   sharePhoto({
@@ -134,16 +137,18 @@ const PhotoDetails = () => {
                     title: photo?.title,
                   })
                 }
+                className="hover:cursor-pointer hover:text-foreground/80"
               >
-                <Share2 className="h-5 w-5" strokeWidth={1} />
+                <Share2 className="!h-7 !w-7" strokeWidth={1} />
               </Button>
               {photo && (
                 <Button
-                  variant="secondary"
+                  variant="ghost"
                   size="icon"
                   onClick={() => downloadPhoto({ photoUrl: photo?.url, title: photo?.title })}
+                  className="hover:cursor-pointer hover:text-foreground/80"
                 >
-                  <Download className="h-5 w-5" strokeWidth={1} />
+                  <Download className="!h-7 !w-7" strokeWidth={1} />
                 </Button>
               )}
             </div>
@@ -157,6 +162,7 @@ const PhotoDetails = () => {
               <p className="hover:text-blue-400">Album No. {album ? album.id : "..."}</p>
             </Link>
             <p>Created by: {user ? user.name : "Couldn't find user"}</p>
+            <p>Contact user:</p>
 
             <div className="flex items-center justify-center flex-wrap gap-4 mt-4">
               <a
@@ -188,7 +194,7 @@ const PhotoDetails = () => {
               </a>
 
               <Popover>
-                <PopoverTrigger className="h-10 w-10 p-2 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors flex justify-center items-center">
+                <PopoverTrigger className="h-10 w-10 p-2 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 hover:cursor-pointer transition-colors flex justify-center items-center">
                   <Building2 className="h-5 w-5" strokeWidth={1} />
                 </PopoverTrigger>
                 <PopoverContent
@@ -239,28 +245,44 @@ const PhotoDetails = () => {
         )}
         {photosByAlbum && photosByAlbum.length > 0 && (
           <div className="columns-2 sm:columns-3 md:columns-4 xl:columns-5 gap-4 space-y-4 lg:gap-10 lg:space-y-10">
-            {photosByAlbum.map((photo, index) => {
-              return (
-                <div
-                  key={photo.id}
-                  onClick={() => {
-                    navigate(`/photos/${photo.id}`);
-                    window.scrollTo({ top: 0, behavior: "smooth" });
-                  }}
+            {photosByAlbum.map((photo, index) => (
+              <div key={photo.id} className="relative group">
+                <Link
+                  to={`/photos/${photo.id}`}
                   className={cn(
-                    "group relative block overflow-hidden transform transition duration-300 hover:scale-[1.03] break-inside-avoid",
+                    "block overflow-hidden transform transition duration-300 hover:scale-[1.03] break-inside-avoid",
                     photoAspectClass(index)
                   )}
                 >
                   <ImageWithFallback src={photo.thumbnailUrl} alt={photo.title} />
+
                   <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/40 transition-colors duration-500">
                     <p className="opacity-0 group-hover:opacity-100 text-white text-center px-2 transition-opacity duration-500">
                       {photo.title ? photo.title.charAt(0).toUpperCase() + photo.title.slice(1) : ""}
                     </p>
                   </div>
-                </div>
-              );
-            })}
+                </Link>
+
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    toggleLike(photo.id);
+                  }}
+                  title={isLiked(photo.id) ? "Unlike" : "Like"}
+                  className="absolute top-1 right-1 p-0 rounded-full transition-all duration-300 z-10 opacity-0 group-hover:opacity-100 hover:cursor-pointer"
+                >
+                  <Heart
+                    className={cn(
+                      "!h-6 !w-6 transition-colors duration-300",
+                      isLiked(photo.id) ? "fill-red-500 text-red-500" : "text-white"
+                    )}
+                    strokeWidth={1}
+                  />
+                </Button>
+              </div>
+            ))}
           </div>
         )}
       </section>

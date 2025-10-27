@@ -11,7 +11,7 @@ const BackPreviousButton = () => {
       variant="ghost"
       size="lgIcon"
       onClick={() => navigate(-1)}
-      className="absolute top-0 -left-1.5 z-[999]"
+      className="absolute top-0 -left-1.5 z-100"
     >
       <ArrowLeft className="!h-12 !w-12 shrink-0" strokeWidth={1} />
     </Button>

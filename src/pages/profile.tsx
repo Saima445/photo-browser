@@ -92,7 +92,7 @@ const Profile = () => {
                       e.preventDefault();
                       toggleLike(photo.id);
                     }}
-                    className="absolute top-2 right-2 p-2 rounded-full bg-transparent hover:bg-primary/80 hover:cursor-pointer transition-colors z-10"
+                    className="absolute top-1 right-1 rounded-full bg-transparent hover:cursor-pointer transition-colors z-10"
                     title="Unlike"
                   >
                     <Heart className="!h-6 !w-6 fill-red-500 text-red-500" />
