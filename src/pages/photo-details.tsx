@@ -2,7 +2,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@radix-ui/react-popover
 import { useQuery } from "@tanstack/react-query";
 import { ArrowDown, Building2, Download, Globe, Loader, Mail, Phone, RefreshCw, Share2 } from "lucide-react";
 import { Heart } from "lucide-react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import { getAlbumByIdWithClient } from "@/api/jsonplaceholder/albums";
 import { getPhotoByIdWithClient, getPhotosByAlbumIdWithClient } from "@/api/jsonplaceholder/photos";
@@ -20,7 +20,6 @@ import { photoAspectClass } from "@/utils/photo-aspect-class";
 
 const PhotoDetails = () => {
   const { photoId } = useParams<{ photoId: string }>();
-  const navigate = useNavigate();
   const isMobile = useIsMobile();
   const { toggleLike, isLiked } = useLocalLikes();
 
