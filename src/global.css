@@ -1,7 +1,13 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&display=swap");
+
 @import "tailwindcss";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@theme inline {
+  --font-playfair: "Playfair Display", serif;
+}
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
@@ -135,7 +141,8 @@
   }
 
   h1 {
-    @apply text-[72px] uppercase tracking-tight;
+    font-size: clamp(4rem, 6vw + 1rem, 7rem);
+    @apply uppercase tracking-tight;
   }
 
   h2 {
@@ -155,6 +162,13 @@
   }
 
   h6 {
-    @apply text-lg tracking-tight;
+    @apply text-2xl tracking-tight;
+  }
+
+  h2,
+  h3,
+  h4,
+  h5 {
+    @apply font-playfair;
   }
 }

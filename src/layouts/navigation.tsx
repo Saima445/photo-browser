@@ -39,7 +39,7 @@ export const Navigation = () => {
     return (
       <nav className="fixed top-0 left-0 w-full flex items-center justify-between pl-6 pr-4 py-2 bg-background z-[999]">
         <Link to={"/"}>
-          <h4 className="">Photo Browser</h4>
+          <h6>Photo Browser</h6>
         </Link>
         {!menuOpen && (
           <Button variant="ghost" size="lgIcon" onClick={() => setMenuOpen(true)} aria-label="Open menu">

@@ -16,7 +16,7 @@ export const Hero = () => {
             : `url('${import.meta.env.BASE_URL}images/bg-light.jpg')`,
       }}
     >
-      <div className="flex flex-col justify-start">
+      <div className="h-full flex flex-col justify-center sm:px-8">
         <div className="flex items-center gap-6">
           <h1>Serving</h1>
           <Button
@@ -29,8 +29,8 @@ export const Hero = () => {
             <ArrowDown className="h-12 w-12 shrink-0" strokeWidth={1} />
           </Button>
         </div>
-        <h1>better pixels</h1>
-        <h1 className="self-end items-end">since 2025</h1>
+        <h1 className="font-playfair font-bold">better pixels</h1>
+        <h1 className="sm:self-end">since 2025</h1>
       </div>
     </div>
   );
