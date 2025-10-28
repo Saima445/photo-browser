@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import BackPreviousButton from "@/elements/button-back-to-previous";
 import ScrollToTopButton from "@/elements/button-scroll-to-top";
 import { ImageWithFallback } from "@/elements/image-with-fallback";
+import { useInfiniteScroll } from "@/hooks/use-infinite-scroll";
 import { useLocalLikes } from "@/hooks/use-local-favorites";
 
 type PhotoOrError = Photo & { error?: true };
@@ -40,6 +41,8 @@ const Profile = () => {
     placeholderData: (prev) => prev,
   });
 
+  const { visibleCount, loadMoreRef } = useInfiniteScroll(localStoragePhotos?.length ?? 0, 30);
+
   return (
     <div className="relative md:h-[calc(100svh-68px)] pt-16 sm:pt-24">
       <ScrollToTopButton />
@@ -64,43 +67,61 @@ const Profile = () => {
         {!likedPhotos || likedPhotos.length === 0 ? (
           <p className="text-muted-foreground">You haven&apos;t liked any photos yet.</p>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4">
-            {localStoragePhotos?.map((photo) =>
-              photo.error ? (
-                <div key={photo.id} className="bg-destructive w-full h-full flex items-center justify-center">
-                  <X strokeWidth={1} className="h-[50%] w-[50%]" />
-                </div>
+          <>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4">
+              {localStoragePhotos?.slice(0, visibleCount).map((photo) =>
+                photo.error ? (
+                  <div
+                    key={photo.id}
+                    className="bg-destructive w-full h-full flex items-center justify-center"
+                  >
+                    <X strokeWidth={1} className="h-[50%] w-[50%]" />
+                  </div>
+                ) : (
+                  <div key={photo.id} className="relative group">
+                    <Link
+                      to={`/photos/${photo.id}`}
+                      className="block aspect-square overflow-hidden transform transition duration-300 hover:scale-[1.03]"
+                    >
+                      <ImageWithFallback
+                        src={photo.thumbnailUrl}
+                        alt={photo.title}
+                        className="w-full h-full"
+                      />
+
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/40 transition-colors duration-500">
+                        <p className="opacity-0 group-hover:opacity-100 text-white text-center px-2 transition-opacity duration-500">
+                          {photo.title ? photo.title.charAt(0).toUpperCase() + photo.title.slice(1) : ""}
+                        </p>
+                      </div>
+                    </Link>
+
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        toggleLike(photo.id);
+                      }}
+                      className="absolute top-1 right-1 rounded-full bg-transparent hover:cursor-pointer transition-colors z-10"
+                      title="Unlike"
+                    >
+                      <Heart className="!h-6 !w-6 fill-red-500 text-red-500" />
+                    </Button>
+                  </div>
+                )
+              )}
+            </div>
+            <div ref={loadMoreRef} className="w-full py-8 flex justify-center">
+              {visibleCount < (localStoragePhotos?.length ?? 0) ? (
+                <Loader className="h-6 w-6 animate-spin text-primary" />
               ) : (
-                <div key={photo.id} className="relative group">
-                  <Link
-                    to={`/photos/${photo.id}`}
-                    className="block aspect-square overflow-hidden transform transition duration-300 hover:scale-[1.03]"
-                  >
-                    <ImageWithFallback src={photo.thumbnailUrl} alt={photo.title} className="w-full h-full" />
-
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/40 transition-colors duration-500">
-                      <p className="opacity-0 group-hover:opacity-100 text-white text-center px-2 transition-opacity duration-500">
-                        {photo.title ? photo.title.charAt(0).toUpperCase() + photo.title.slice(1) : ""}
-                      </p>
-                    </div>
-                  </Link>
-
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      toggleLike(photo.id);
-                    }}
-                    className="absolute top-1 right-1 rounded-full bg-transparent hover:cursor-pointer transition-colors z-10"
-                    title="Unlike"
-                  >
-                    <Heart className="!h-6 !w-6 fill-red-500 text-red-500" />
-                  </Button>
-                </div>
-              )
-            )}
-          </div>
+                <p className="text-muted-foreground text-sm">
+                  All {localStoragePhotos?.length} photos loaded
+                </p>
+              )}
+            </div>
+          </>
         )}
       </section>
     </div>

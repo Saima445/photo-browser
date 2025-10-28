@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import BackPreviousButton from "@/elements/button-back-to-previous";
 import ScrollToTopButton from "@/elements/button-scroll-to-top";
+import { useInfiniteScroll } from "@/hooks/use-infinite-scroll";
 import { cn } from "@/lib/utils";
 import { photoAspectClass } from "@/utils/photo-aspect-class";
 
@@ -37,6 +38,8 @@ const Albums = () => {
     return [...result].sort((a, b) => (sortOrder === "asc" ? a.id - b.id : b.id - a.id));
   }, [albums, selectedAlbum, sortOrder]);
 
+  const { visibleCount, loadMoreRef } = useInfiniteScroll(filteredAlbums?.length ?? 0, 50);
+
   return (
     <div className="relative md:h-[calc(100svh-68px)] pt-16 sm:pt-24">
       <ScrollToTopButton />
@@ -54,7 +57,7 @@ const Albums = () => {
                 const value = e.target.value;
                 setSelectedAlbum(value === "" ? null : Number(value));
               }}
-              className="w-[10rem] text-center"
+              className="w-[11rem] text-center"
             />
             <Button
               variant="outline"
@@ -82,9 +85,9 @@ const Albums = () => {
         )}
 
         {filteredAlbums && filteredAlbums.length > 0 && (
-          <div className="columns-2 sm:columns-3 md:columns-4 xl:columns-5 gap-4 space-y-4 lg:gap-10 lg:space-y-10">
-            {filteredAlbums.map((album, index) => {
-              return (
+          <>
+            <div className="columns-2 sm:columns-3 md:columns-4 xl:columns-5 gap-4 space-y-4 lg:gap-10 lg:space-y-10">
+              {filteredAlbums.slice(0, visibleCount).map((album, index) => (
                 <Link
                   key={album.id}
                   to={`/albums/${album.id}`}
@@ -101,9 +104,16 @@ const Albums = () => {
                     {album.title ? album.title.charAt(0).toUpperCase() + album.title.slice(1) : ""}
                   </p>
                 </Link>
-              );
-            })}
-          </div>
+              ))}
+            </div>
+            <div ref={loadMoreRef} className="w-full py-8 flex justify-center">
+              {visibleCount < filteredAlbums.length ? (
+                <Loader className="h-6 w-6 animate-spin text-primary" />
+              ) : (
+                <p className="text-muted-foreground text-sm"> All {filteredAlbums?.length} albums loaded</p>
+              )}
+            </div>
+          </>
         )}
       </section>
     </div>

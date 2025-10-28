@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { Heart, Loader, RefreshCw } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Loader, RefreshCw } from "lucide-react";
+import { useMemo, useState } from "react";
 
 import { getAlbumsWithClient } from "@/api/jsonplaceholder/albums";
 import { getPhotosWithClient } from "@/api/jsonplaceholder/photos";
@@ -10,16 +9,11 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import ScrollToTopButton from "@/elements/button-scroll-to-top";
 import { Hero } from "@/elements/hero";
-import { ImageWithFallback } from "@/elements/image-with-fallback";
-import { useLocalLikes } from "@/hooks/use-local-favorites";
-import { cn } from "@/lib/utils";
-import { photoAspectClass } from "@/utils/photo-aspect-class";
+import { MasonryPhotos } from "@/elements/masonry-photos";
+import { useInfiniteScroll } from "@/hooks/use-infinite-scroll";
 
 const Home = () => {
   const [selectedUser, setSelectedUser] = useState<number | null>(null);
-  const [visibleCount, setVisibleCount] = useState(100);
-  const loadMoreRef = useRef<HTMLDivElement>(null);
-  const { isLiked, toggleLike } = useLocalLikes();
 
   const {
     data: photos,
@@ -50,26 +44,7 @@ const Home = () => {
     return photos.filter((photo) => userAlbumIds.includes(photo.albumId));
   }, [selectedUser, photos, albums]);
 
-  useEffect(() => {
-    if (!filteredPhotos || filteredPhotos.length === 0) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const first = entries[0];
-        if (first.isIntersecting && visibleCount < filteredPhotos.length) {
-          setVisibleCount((prev) => prev + 100);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    const current = loadMoreRef.current;
-    if (current) observer.observe(current);
-
-    return () => {
-      if (current) observer.unobserve(current);
-    };
-  }, [filteredPhotos, visibleCount]);
+  const { visibleCount, loadMoreRef } = useInfiniteScroll(filteredPhotos?.length ?? 0, 100);
 
   return (
     <div className="relative flex flex-col gap-24">
@@ -114,47 +89,8 @@ const Home = () => {
 
         {filteredPhotos && filteredPhotos.length > 0 && (
           <>
-            <div className="columns-2 sm:columns-3 md:columns-4 xl:columns-5 gap-4 space-y-4 lg:gap-10 lg:space-y-10">
-              {filteredPhotos.slice(0, visibleCount).map((photo, index) => (
-                <div key={photo.id} className="relative group">
-                  <Link
-                    to={`/photos/${photo.id}`}
-                    className={cn(
-                      "block overflow-hidden transform transition duration-300 hover:scale-[1.03] break-inside-avoid",
-                      photoAspectClass(index)
-                    )}
-                  >
-                    <ImageWithFallback src={photo.thumbnailUrl} alt={photo.title} />
-
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/40 transition-colors duration-500">
-                      <p className="opacity-0 group-hover:opacity-100 text-white text-center px-2 transition-opacity duration-500">
-                        {photo.title ? photo.title.charAt(0).toUpperCase() + photo.title.slice(1) : ""}
-                      </p>
-                    </div>
-                  </Link>
-
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      toggleLike(photo.id);
-                    }}
-                    title={isLiked(photo.id) ? "Unlike" : "Like"}
-                    className="absolute top-1 right-1 p-0 rounded-full transition-all duration-300 z-10 opacity-0 group-hover:opacity-100 hover:cursor-pointer"
-                  >
-                    <Heart
-                      className={cn(
-                        "!h-6 !w-6 transition-colors duration-300",
-                        isLiked(photo.id) ? "fill-red-500 text-red-500" : "text-white"
-                      )}
-                      strokeWidth={1}
-                    />
-                  </Button>
-                </div>
-              ))}
-            </div>
-            <div ref={loadMoreRef} className="w-full py-12 flex justify-center">
+            <MasonryPhotos photos={filteredPhotos} visibleCount={visibleCount} />
+            <div ref={loadMoreRef} className="w-full py-8 flex justify-center">
               {visibleCount < filteredPhotos.length ? (
                 <Loader className="h-6 w-6 animate-spin text-primary" />
               ) : (

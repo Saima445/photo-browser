@@ -10,7 +10,7 @@ export interface Photo {
 }
 
 export const getPhotosWithClient = async (): Promise<Photo[]> => {
-  const photos = await apiClient<Photo[]>("/photos");
+  const photos = await apiClient<Photo[]>("/photos?_limit=1000");
 
   return photos.map((photo) => ({
     ...photo,
