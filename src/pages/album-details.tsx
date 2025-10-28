@@ -48,8 +48,12 @@ const AlbumDetails = () => {
       <section className="flex flex-col items-start gap-6 justify-start sm:w-[16%] sm:sticky sm:top-[68px]">
         <h3>{album?.title ? album.title.charAt(0).toUpperCase() + album.title.slice(1) : "..."}</h3>
         <div className="space-y-2">
-          <p>Album No. {album ? album.id : "..."}</p>
-          <p>Who made this album: {user ? user.name : "Couldn't find user"}</p>
+          <p>
+            <strong>Album</strong> No. {album ? album.id : "..."}
+          </p>
+          <p>
+            <strong>Who made this album:</strong> {user ? user.name : "Couldn't find user"}
+          </p>
         </div>
       </section>
       <section className="flex-1">

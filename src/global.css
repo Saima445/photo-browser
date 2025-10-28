@@ -141,34 +141,34 @@
   }
 
   h1 {
-    font-size: clamp(4rem, 6vw + 1rem, 7rem);
-    @apply uppercase font-extralight tracking-tight;
+    font-size: clamp(5rem, 6vw + 1rem, 7rem);
+    @apply uppercase font-extralight;
   }
 
   h2 {
-    @apply text-[52px] tracking-tight;
+    @apply text-[52px];
   }
 
   h3 {
-    @apply text-3xl tracking-tight;
+    @apply text-3xl;
   }
 
   h4 {
-    @apply text-2xl tracking-tight;
+    @apply text-2xl;
   }
 
   h5 {
-    @apply text-xl tracking-tight;
+    font-size: clamp(2rem, 6vw + 1rem, 4rem);
+    @apply uppercase font-extralight;
   }
 
   h6 {
-    @apply text-2xl tracking-tight;
+    @apply text-2xl;
   }
 
   h2,
   h3,
-  h4,
-  h5 {
+  h4 {
     @apply font-bodoni;
   }
 }

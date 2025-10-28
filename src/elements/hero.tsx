@@ -8,7 +8,7 @@ export const Hero = () => {
 
   return (
     <div
-      className="h-full w-full bg-cover sm:bg-contain bg-center bg-no-repeat sm:bg-fixed transition-[background-image] duration-500"
+      className="relative h-full w-full bg-cover sm:bg-contain bg-center bg-no-repeat sm:bg-fixed transition-[background-image] duration-500"
       style={{
         backgroundImage:
           theme === "dark"
@@ -30,8 +30,9 @@ export const Hero = () => {
           </Button>
         </div>
         <h1 className="font-bodoni">better pixels</h1>
-        <h1 className="sm:self-end">since 2025</h1>
       </div>
+
+      <h5 className="absolute bottom-4 right-6 sm:right-8 text-right">since 2025</h5>
     </div>
   );
 };

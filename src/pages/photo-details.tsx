@@ -105,10 +105,15 @@ const PhotoDetails = () => {
           <div className=" flex flex-col justify-start gap-2">
             {/* photo */}
             <h3 className="mb-4">Photo details</h3>
-            <p>Title: {photo?.title ? photo.title.charAt(0).toUpperCase() + photo.title.slice(1) : "..."}</p>
-            <p>Photographer: {picsumData?.author}</p>
             <p>
-              Resolution: {picsumData?.width} x {picsumData?.height}
+              <strong>Title:</strong>{" "}
+              {photo?.title ? photo.title.charAt(0).toUpperCase() + photo.title.slice(1) : "..."}
+            </p>
+            <p>
+              <strong>Photographer:</strong> {picsumData?.author}
+            </p>
+            <p>
+              <strong>Resolution:</strong> {picsumData?.width} x {picsumData?.height}
             </p>
             <div className="flex items-center justify-start flex-wrap gap-4 mt-4">
               {photo && (
@@ -159,12 +164,21 @@ const PhotoDetails = () => {
           {/* album */}
           <div className="flex flex-col justify-start gap-2 bg-secondary p-6 rounded-3xl">
             <h3 className="mb-4">Album details</h3>
-            <p>Name: {album?.title ? album.title.charAt(0).toUpperCase() + album.title.slice(1) : "..."}</p>
+            <p>
+              <strong>Name:</strong>{" "}
+              {album?.title ? album.title.charAt(0).toUpperCase() + album.title.slice(1) : "..."}
+            </p>
             <Link to={`/albums/${album?.id}`}>
-              <p className="hover:text-blue-400">Album No. {album ? album.id : "..."}</p>
+              <p className="hover:text-blue-400">
+                <strong>Album:</strong> No. {album ? album.id : "..."}
+              </p>
             </Link>
-            <p>Created by: {user ? user.name : "Couldn't find user"}</p>
-            <p>Contact user:</p>
+            <p>
+              <strong>Created by:</strong> {user ? user.name : "Couldn't find user"}
+            </p>
+            <p>
+              <strong>Contact user:</strong>
+            </p>
 
             <div className="flex items-center justify-center flex-wrap gap-4 mt-4">
               <a

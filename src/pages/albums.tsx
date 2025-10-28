@@ -98,7 +98,7 @@ const Albums = () => {
                 >
                   <div className="flex gap-4 items-center">
                     <Folder className="w-12 h-12" strokeWidth={1} />
-                    <h3>No. {album.id}</h3>
+                    <h6 className="font-extralight">No. {album.id}</h6>
                   </div>
                   <p className="text-center px-2 line-clamp-2">
                     {album.title ? album.title.charAt(0).toUpperCase() + album.title.slice(1) : ""}
