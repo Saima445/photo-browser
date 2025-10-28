@@ -69,48 +69,51 @@ const Profile = () => {
         ) : (
           <>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4">
-              {localStoragePhotos?.slice(0, visibleCount).map((photo) =>
-                photo.error ? (
-                  <div
-                    key={photo.id}
-                    className="bg-destructive w-full h-full flex items-center justify-center"
-                  >
-                    <X strokeWidth={1} className="h-[50%] w-[50%]" />
-                  </div>
-                ) : (
-                  <div key={photo.id} className="relative group">
-                    <Link
-                      to={`/photos/${photo.id}`}
-                      className="block aspect-square overflow-hidden transform transition duration-300 hover:scale-[1.03]"
+              {localStoragePhotos
+                ?.slice(0, visibleCount)
+                .reverse()
+                .map((photo) =>
+                  photo.error ? (
+                    <div
+                      key={photo.id}
+                      className="bg-destructive w-full h-full flex items-center justify-center"
                     >
-                      <ImageWithFallback
-                        src={photo.thumbnailUrl}
-                        alt={photo.title}
-                        className="w-full h-full"
-                      />
+                      <X strokeWidth={1} className="h-[50%] w-[50%]" />
+                    </div>
+                  ) : (
+                    <div key={photo.id} className="relative group">
+                      <Link
+                        to={`/photos/${photo.id}`}
+                        className="block aspect-square overflow-hidden transform transition duration-300 hover:scale-[1.03]"
+                      >
+                        <ImageWithFallback
+                          src={photo.thumbnailUrl}
+                          alt={photo.title}
+                          className="w-full h-full"
+                        />
 
-                      <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/40 transition-colors duration-500">
-                        <p className="opacity-0 group-hover:opacity-100 text-white text-center px-2 transition-opacity duration-500">
-                          {photo.title ? photo.title.charAt(0).toUpperCase() + photo.title.slice(1) : ""}
-                        </p>
-                      </div>
-                    </Link>
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/40 transition-colors duration-500">
+                          <p className="opacity-0 group-hover:opacity-100 text-white text-center px-2 transition-opacity duration-500">
+                            {photo.title ? photo.title.charAt(0).toUpperCase() + photo.title.slice(1) : ""}
+                          </p>
+                        </div>
+                      </Link>
 
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        toggleLike(photo.id);
-                      }}
-                      className="absolute top-1 right-1 rounded-full bg-transparent hover:cursor-pointer transition-colors z-10"
-                      title="Unlike"
-                    >
-                      <Heart className="!h-6 !w-6 fill-red-500 text-red-500" />
-                    </Button>
-                  </div>
-                )
-              )}
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          toggleLike(photo.id);
+                        }}
+                        className="absolute top-1 right-1 rounded-full bg-transparent hover:cursor-pointer transition-colors z-10"
+                        title="Unlike"
+                      >
+                        <Heart className="!h-6 !w-6 fill-red-500 text-red-500" />
+                      </Button>
+                    </div>
+                  )
+                )}
             </div>
             <div ref={loadMoreRef} className="w-full py-8 flex justify-center">
               {visibleCount < (localStoragePhotos?.length ?? 0) ? (
