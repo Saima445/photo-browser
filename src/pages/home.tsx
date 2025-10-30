@@ -1,10 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { Loader, RefreshCw } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
-import { getAlbumsWithClient } from "@/api/jsonplaceholder/albums";
-import { getPhotosWithClient } from "@/api/jsonplaceholder/photos";
-import { getUsersWithClient } from "@/api/jsonplaceholder/users";
+import { getPhotosByAlbumIdWithClient, getPhotosWithClient } from "@/api/jsonplaceholder/photos";
+import { getUsersAlbumsWithClient, getUsersWithClient } from "@/api/jsonplaceholder/users";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import ScrollToTopButton from "@/elements/button-scroll-to-top";
@@ -31,18 +30,23 @@ const Home = () => {
     queryFn: getUsersWithClient,
   });
 
-  const { data: albums } = useQuery({
-    queryKey: ["albums"],
-    queryFn: getAlbumsWithClient,
+  const { data: userAlbums } = useQuery({
+    queryKey: ["user-albums", selectedUser],
+    queryFn: () => getUsersAlbumsWithClient(selectedUser!),
+    enabled: !!selectedUser,
   });
 
-  const filteredPhotos = useMemo(() => {
-    if (!selectedUser || !albums || !photos) return photos;
+  const { data: userPhotos } = useQuery({
+    queryKey: ["user-photos", selectedUser],
+    queryFn: async () => {
+      if (!userAlbums) return [];
+      const res = await Promise.all(userAlbums.map((album) => getPhotosByAlbumIdWithClient(album.id)));
+      return res.flat(); // flat array of arrays
+    },
+    enabled: !!userAlbums,
+  });
 
-    const userAlbumIds = albums.filter((album) => album.userId === selectedUser).map((album) => album.id);
-
-    return photos.filter((photo) => userAlbumIds.includes(photo.albumId));
-  }, [selectedUser, photos, albums]);
+  const filteredPhotos = selectedUser ? (userPhotos ?? []) : (photos ?? []);
 
   const { visibleCount, loadMoreRef } = useInfiniteScroll(filteredPhotos?.length ?? 0, 100);
 

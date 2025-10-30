@@ -1,3 +1,4 @@
+import type { Album } from "@/api/jsonplaceholder/albums";
 import { apiClient } from "@/api/jsonplaceholder/client";
 
 interface User {
@@ -30,4 +31,8 @@ export const getUsersWithClient = async (): Promise<User[]> => {
 
 export const getUserByIdWithClient = async (userId: number): Promise<User> => {
   return await apiClient<User>(`/users/${userId}`);
+};
+
+export const getUsersAlbumsWithClient = async (userId: number): Promise<Album[]> => {
+  return await apiClient<Album[]>(`/users/${userId}/albums`);
 };

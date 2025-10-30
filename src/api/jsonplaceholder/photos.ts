@@ -30,7 +30,7 @@ export const getPhotoByIdWithClient = async (photoId: string): Promise<Photo> =>
 };
 
 export const getPhotosByAlbumIdWithClient = async (albumId: number): Promise<Photo[]> => {
-  const photos = await apiClient<Photo[]>(`/photos?albumId=${albumId}`);
+  const photos = await apiClient<Photo[]>(`/albums/${albumId}/photos`);
 
   return photos.map((photo) => ({
     ...photo,

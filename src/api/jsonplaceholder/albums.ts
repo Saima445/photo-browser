@@ -1,6 +1,6 @@
 import { apiClient } from "@/api/jsonplaceholder/client";
 
-interface Album {
+export interface Album {
   id: number;
   userId: number;
   title: string;
